@@ -1,0 +1,2 @@
+C:\Users\johnc\Documents\ElevenFiftyProjects\GoldBadge\WeeklyChallenges\Week3Challenges_Library\obj\Debug\Week3Challenges_Library.csprojAssemblyReference.cache
+C:\Users\johnc\Documents\ElevenFiftyProjects\GoldBadge\WeeklyChallenges\Week3Challenges_Library\obj\Debug\Week3Challenges_Library.csproj.CoreCompileInputs.cache

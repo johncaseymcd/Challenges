@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week2Challenges", "Week2Challenges\Week2Challenges.csproj", "{5E0BE03B-B48E-4460-8DCC-8A83D1E33204}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week3Challenges_Console", "Week3Challenges\Week3Challenges_Console.csproj", "{E862F87E-8E34-466C-98CA-114F8CC21B62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week3Challenges_Library", "Week3Challenges_Library\Week3Challenges_Library.csproj", "{A88AFA23-4A42-480C-A3F5-D46DD8237F6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{5E0BE03B-B48E-4460-8DCC-8A83D1E33204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E0BE03B-B48E-4460-8DCC-8A83D1E33204}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E0BE03B-B48E-4460-8DCC-8A83D1E33204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E862F87E-8E34-466C-98CA-114F8CC21B62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E862F87E-8E34-466C-98CA-114F8CC21B62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E862F87E-8E34-466C-98CA-114F8CC21B62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E862F87E-8E34-466C-98CA-114F8CC21B62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A88AFA23-4A42-480C-A3F5-D46DD8237F6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A88AFA23-4A42-480C-A3F5-D46DD8237F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A88AFA23-4A42-480C-A3F5-D46DD8237F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A88AFA23-4A42-480C-A3F5-D46DD8237F6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
