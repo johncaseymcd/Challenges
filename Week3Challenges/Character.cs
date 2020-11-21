@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Week3Challenges_Library
+namespace Week3Challenges
 {
     // List of races categorized by Character-only C, Monster-only M, or both B
     public enum EntityRace
@@ -41,20 +41,20 @@ namespace Week3Challenges_Library
     // List of possible alignments
     public enum EntityAlignment
     {
-        Lawful_Good = 1,
-        Neutral_Good,
-        Chaotic_Good,
-        Lawful_Neutral,
-        True_Neutral,
-        Chaotic_Neutral,
-        Lawful_Evil,
-        Neutral_Evil,
-        Chaotic_Evil
+        C_Lawful_Good = 1,
+        C_Neutral_Good,
+        C_Chaotic_Good,
+        C_Lawful_Neutral,
+        B_True_Neutral,
+        B_Chaotic_Neutral,
+        B_Lawful_Evil,
+        B_Neutral_Evil,
+        B_Chaotic_Evil
     }
 
     // ------------------------------------------------------------------------
 
-   public class Entity
+    public class Entity
     {
         public EntityRace Race { get; set; }
         public EntityClass EntityClass { get; set; }
@@ -94,7 +94,7 @@ namespace Week3Challenges_Library
 
     // ------------------------------------------------------------------------
 
-    abstract class EntityCRUD
+    public abstract class EntityCRUD
     {
         public abstract void Create(Entity entity);
         public abstract List<Entity> List();
@@ -105,16 +105,16 @@ namespace Week3Challenges_Library
 
     // ------------------------------------------------------------------------
 
-    class CharacterCRUD: EntityCRUD
+    public class CharacterCRUD : EntityCRUD
     {
         private List<Entity> _characterList = new List<Entity>();
 
-        private List<string> FindRace_Character()
+        public List<string> FindRace_Character()
         {
             var count = Enum.GetValues(typeof(EntityRace));
             List<string> characterRaces = new List<string>();
 
-            for (int x  = 0; x < count.Length; x++)
+            for (int x = 0; x <= count.Length; x++)
             {
                 foreach (string race in Enum.GetNames(typeof(EntityRace)))
                 {
@@ -124,17 +124,17 @@ namespace Week3Challenges_Library
                     }
                 }
             }
-            return characterRaces;            
+            return characterRaces;
         }
 
-        private List<string> FindClass_Character()
+        public List<string> FindClass_Character()
         {
             var count = Enum.GetValues(typeof(EntityClass));
             List<string> characterClasses = new List<string>();
 
-            for (int x = 0; x < count.Length; x++)
+            for (int x = 0; x <= count.Length; x++)
             {
-                foreach(string className in Enum.GetNames(typeof(EntityClass)))
+                foreach (string className in Enum.GetNames(typeof(EntityClass)))
                 {
                     if (className.StartsWith("C") || className.StartsWith("B"))
                     {
@@ -145,7 +145,7 @@ namespace Week3Challenges_Library
             return characterClasses;
         }
 
-        // Create
+       // Create
         public override void Create(Entity character)
         {
             _characterList.Add(character);
@@ -226,16 +226,16 @@ namespace Week3Challenges_Library
 
     // ------------------------------------------------------------------------
 
-    class MonsterCRUD: EntityCRUD
+    public class MonsterCRUD : EntityCRUD
     {
         private List<Entity> _monsterList = new List<Entity>();
 
-        private List<string> FindRace_Monster()
+        public List<string> FindRace_Monster()
         {
             var count = Enum.GetValues(typeof(EntityRace));
             List<string> monsterRaces = new List<string>();
 
-            for (int x = 0; x < count.Length; x++)
+            for (int x = 0; x <= count.Length; x++)
             {
                 foreach (string race in Enum.GetNames(typeof(EntityRace)))
                 {
@@ -249,12 +249,12 @@ namespace Week3Challenges_Library
             return monsterRaces;
         }
 
-        private List<string> FindClass_Monster()
+        public List<string> FindClass_Monster()
         {
             var count = Enum.GetValues(typeof(EntityClass));
             List<string> monsterClasses = new List<string>();
 
-            for (int x = 0; x < count.Length; x++)
+            for (int x = 0; x <= count.Length; x++)
             {
                 foreach (string className in Enum.GetValues(typeof(EntityClass)))
                 {
@@ -266,6 +266,25 @@ namespace Week3Challenges_Library
             }
 
             return monsterClasses;
+        }
+
+        public List<string> FindAlignment_Monster()
+        {
+            var count = Enum.GetValues(typeof(EntityAlignment));
+            List<string> monsterAlignments = new List<string>();
+
+            for (int x = 0; x <= count.Length; x++)
+            {
+                foreach(string alignmentName in Enum.GetValues(typeof(EntityAlignment)))
+                {
+                    if (alignmentName.StartsWith("M") || alignmentName.StartsWith("B"))
+                    {
+                        monsterAlignments.Add(alignmentName);
+                    }
+                }
+            }
+
+            return monsterAlignments;
         }
 
         public override void Create(Entity monster)
@@ -330,7 +349,7 @@ namespace Week3Challenges_Library
 
         public override Entity GetName(string name)
         {
-            foreach(Entity monster in _monsterList)
+            foreach (Entity monster in _monsterList)
             {
                 if (monster.Name.ToLower() == name.ToLower())
                 {
@@ -342,7 +361,9 @@ namespace Week3Challenges_Library
         }
     }
 
-    class NonPlayerCRUD: EntityCRUD
+    // ------------------------------------------------------------------------
+
+    public class NonPlayerCRUD : EntityCRUD
     {
         private List<Entity> _npcList = new List<Entity>();
 
@@ -408,7 +429,7 @@ namespace Week3Challenges_Library
 
         public override Entity GetName(string name)
         {
-            foreach(Entity npc in _npcList)
+            foreach (Entity npc in _npcList)
             {
                 if (npc.Name.ToLower() == name.ToLower())
                 {
