@@ -1,0 +1,7 @@
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\WeeklyChallenges\Week3Challenges\obj\Debug\Week3Challenges.csprojAssemblyReference.cache
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\WeeklyChallenges\Week3Challenges\obj\Debug\Week3Challenges.csproj.CoreCompileInputs.cache
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\WeeklyChallenges\Week3Challenges\obj\Debug\Week3Challenges.exe
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\WeeklyChallenges\Week3Challenges\obj\Debug\Week3Challenges.pdb
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\WeeklyChallenges\Week3Challenges\bin\Debug\Week3Challenges.exe.config
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\WeeklyChallenges\Week3Challenges\bin\Debug\Week3Challenges.exe
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\WeeklyChallenges\Week3Challenges\bin\Debug\Week3Challenges.pdb

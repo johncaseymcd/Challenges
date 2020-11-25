@@ -19,8 +19,8 @@ namespace Week3Challenges
                     "4. Exit\n");
 
                 CharacterCreationScreen create = new CharacterCreationScreen();
-                CharacterEditScreen edit = new CharacterEditScreen();
-                CharacterDeleteScreen delete = new CharacterDeleteScreen();
+               // CharacterEditScreen edit = new CharacterEditScreen();
+              //  CharacterDeleteScreen delete = new CharacterDeleteScreen();
 
                 string input = Console.ReadLine();
                 bool parsed = int.TryParse(input, out int whatToDo);
@@ -33,10 +33,10 @@ namespace Week3Challenges
                             create.Run();
                             break;
                         case 2:
-                            edit.Run();
+                           // edit.Run();
                             break;
                         case 3:
-                            delete.Run();
+                           // delete.Run();
                             break;
                         default:
                             Console.WriteLine("Invalid input. Press enter to continue.");

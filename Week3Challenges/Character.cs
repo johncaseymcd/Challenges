@@ -111,17 +111,12 @@ namespace Week3Challenges
 
         public List<string> FindRace_Character()
         {
-            var count = Enum.GetValues(typeof(EntityRace));
             List<string> characterRaces = new List<string>();
-
-            for (int x = 0; x <= count.Length; x++)
+            foreach (string race in Enum.GetNames(typeof(EntityRace)))
             {
-                foreach (string race in Enum.GetNames(typeof(EntityRace)))
+                if (race.StartsWith("C") || race.StartsWith("B"))
                 {
-                    if (race.StartsWith("C") || race.StartsWith("B"))
-                    {
-                        characterRaces.Add(race);
-                    }
+                    characterRaces.Add(race);
                 }
             }
             return characterRaces;
@@ -129,20 +124,27 @@ namespace Week3Challenges
 
         public List<string> FindClass_Character()
         {
-            var count = Enum.GetValues(typeof(EntityClass));
             List<string> characterClasses = new List<string>();
 
-            for (int x = 0; x <= count.Length; x++)
+            foreach (string className in Enum.GetNames(typeof(EntityClass)))
             {
-                foreach (string className in Enum.GetNames(typeof(EntityClass)))
+                if (className.StartsWith("C") || className.StartsWith("B"))
                 {
-                    if (className.StartsWith("C") || className.StartsWith("B"))
-                    {
-                        characterClasses.Add(className);
-                    }
+                    characterClasses.Add(className);
                 }
             }
             return characterClasses;
+        }
+
+        public List<string> FindAlignment_Character()
+        {
+            List<string> characterAlignments = new List<string>();
+
+            foreach(string alignmentName in Enum.GetNames(typeof(EntityAlignment)))
+            {
+                characterAlignments.Add(alignmentName);
+            }
+            return characterAlignments;
         }
 
        // Create
@@ -232,58 +234,43 @@ namespace Week3Challenges
 
         public List<string> FindRace_Monster()
         {
-            var count = Enum.GetValues(typeof(EntityRace));
             List<string> monsterRaces = new List<string>();
 
-            for (int x = 0; x <= count.Length; x++)
+            foreach (string race in Enum.GetNames(typeof(EntityRace)))
             {
-                foreach (string race in Enum.GetNames(typeof(EntityRace)))
+                if (race.StartsWith("M") || race.StartsWith("B"))
                 {
-                    if (race.StartsWith("M") || race.StartsWith("B"))
-                    {
-                        monsterRaces.Add(race);
-                    }
+                    monsterRaces.Add(race);
                 }
             }
-
             return monsterRaces;
         }
 
         public List<string> FindClass_Monster()
         {
-            var count = Enum.GetValues(typeof(EntityClass));
             List<string> monsterClasses = new List<string>();
 
-            for (int x = 0; x <= count.Length; x++)
+            foreach (string className in Enum.GetValues(typeof(EntityClass)))
             {
-                foreach (string className in Enum.GetValues(typeof(EntityClass)))
+                if (className.StartsWith("M") || className.StartsWith("B"))
                 {
-                    if (className.StartsWith("M") || className.StartsWith("B"))
-                    {
-                        monsterClasses.Add(className);
-                    }
+                    monsterClasses.Add(className);
                 }
             }
-
             return monsterClasses;
         }
 
         public List<string> FindAlignment_Monster()
         {
-            var count = Enum.GetValues(typeof(EntityAlignment));
             List<string> monsterAlignments = new List<string>();
 
-            for (int x = 0; x <= count.Length; x++)
+            foreach(string alignmentName in Enum.GetValues(typeof(EntityAlignment)))
             {
-                foreach(string alignmentName in Enum.GetValues(typeof(EntityAlignment)))
+                if (alignmentName.StartsWith("M") || alignmentName.StartsWith("B"))
                 {
-                    if (alignmentName.StartsWith("M") || alignmentName.StartsWith("B"))
-                    {
-                        monsterAlignments.Add(alignmentName);
-                    }
+                    monsterAlignments.Add(alignmentName);
                 }
             }
-
             return monsterAlignments;
         }
 

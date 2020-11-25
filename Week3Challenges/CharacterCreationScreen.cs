@@ -10,6 +10,7 @@ namespace Week3Challenges
     {
         Entity newCharacter = new Entity();
         CharacterCRUD characterInfo = new CharacterCRUD();
+        List<Entity> _characterList = new List<Entity>();
 
         public void Run()
         {
@@ -29,8 +30,23 @@ namespace Week3Challenges
                         // Code for Character creation
                         ChooseRace_Character();
                         ChooseClass_Character();
-                        ChooseAlignment_NonMonster();
-                        EnterDetails();
+                        ChooseAlignment_Character();
+                        Console.Clear();
+                        string displayDetails = EnterDetails_Character();
+                        Console.WriteLine(displayDetails);
+                        Console.WriteLine("Would you like to edit your character (y/n)?");
+                        string toChange = Console.ReadLine().ToLower();
+                        if (toChange == "y")
+                        {
+                            Console.Clear();
+                            EnterDetails_Character();
+                        }
+                        else
+                        {
+                            _characterList.Add(newCharacter);
+                            Console.WriteLine("Character successfully created!");
+                            Console.ReadLine();
+                        }
                         break;
                     case 2:
                         // Code for Monster creation
@@ -56,16 +72,21 @@ namespace Week3Challenges
                 }
             }
             else{
-                Console.WriteLine("Invalid input. Press enter to continue.");
-                while (Console.ReadKey().Key != ConsoleKey.Enter)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Invalid input. Press enter to continue.");
-                    Console.ReadKey();
-                }
+                PressEnterScript();
                 goto MainMenu;
             }
             
+        }
+
+        private void PressEnterScript()
+        {
+            Console.WriteLine("Invalid input. Press enter to continue.");
+            while (Console.ReadKey().Key != ConsoleKey.Enter)
+            {
+                Console.Clear();
+                Console.WriteLine("Invalid input. Press enter to continue.");
+                Console.ReadKey();
+            }
         }
 
         private void ChooseRace_Character()
@@ -76,12 +97,11 @@ namespace Week3Challenges
             Console.Clear();
 
             Console.WriteLine("Choose a character race:\n");
+            int raceCount = 0;
             foreach (string raceName in characterRaces)
             {
-                for (int x = 0; x <= characterRaces.Count; x++)
-                {
-                    Console.WriteLine($"{x + 1}. {raceName.Remove(0, 2)}\n");
-                }
+                raceCount++;
+                Console.WriteLine($"{raceCount}. {raceName.Remove(0, 2)}");
             }
 
             string input = Console.ReadLine();
@@ -127,13 +147,7 @@ namespace Week3Challenges
             }
             else
             {
-                Console.WriteLine("Invalid input. Press enter to continue.");
-                while (Console.ReadKey().Key != ConsoleKey.Enter)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Invalid input. Press enter to continue.");
-                    Console.ReadKey();
-                }
+                PressEnterScript();
                 goto RaceSelect;
             }
         }
@@ -145,12 +159,11 @@ namespace Week3Challenges
             Console.Clear();
 
             Console.WriteLine("Choose a character class:\n");
+            int classCount = 0;
             foreach(string className in characterClasses)
             {
-                for(int x = 0; x <= characterClasses.Count; x++)
-                {
-                    Console.WriteLine($"{x + 1}. {className.Remove(0, 2)}\n");
-                }
+                classCount++;
+                Console.WriteLine($"{classCount}. {className.Remove(0, 2)}");
             }
 
             string input = Console.ReadLine();
@@ -204,29 +217,26 @@ namespace Week3Challenges
             }
             else
             {
-                Console.WriteLine("Invalid input. Press enter to continue.");
-                while (Console.ReadKey().Key != ConsoleKey.Enter)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Invalid input. Press enter to continue.");
-                    Console.ReadKey();
-                }
+                PressEnterScript();
                 goto ClassSelect;
             }
         }
 
-        private void ChooseAlignment_NonMonster()
+        private void ChooseAlignment_Character()
         {
+            List<string> characterAlignments = characterInfo.FindAlignment_Character();
+
         AlignmentSelect:
             Console.Clear();
             Console.WriteLine("Choose the character's alignment:\n");
 
-            for (int x = 0; x <= Enum.GetValues(typeof(EntityAlignment)).Length; x++)
+            int alignmentCount = 0;
+
+            foreach (string alignmentName in characterAlignments)
             {
-                foreach(string alignmentName in Enum.GetValues(typeof(EntityAlignment)))
-                {
-                    Console.WriteLine($"{x + 1}. {alignmentName.Remove(0,2)}\n");
-                }
+                alignmentCount++;
+                string alignment = alignmentName.Replace('_', ' ');
+                Console.WriteLine($"{alignmentCount}. {alignment.Remove(0, 2)}");
             }
             
 
@@ -279,18 +289,12 @@ namespace Week3Challenges
             }
             else
             {
-                Console.WriteLine("Invalid input. Press enter to continue.");
-                while (Console.ReadKey().Key != ConsoleKey.Enter)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Invalid input. Press enter to continue.");
-                    Console.ReadKey();
-                }
+                PressEnterScript();
                 goto AlignmentSelect;
             }
         }
 
-        private void EnterDetails()
+        private string EnterDetails_Character()
         {
             // Name
             Console.WriteLine("What is your character's name?\n");
@@ -316,13 +320,7 @@ namespace Week3Challenges
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input. Press enter to continue.");
-                    while (Console.ReadKey().Key != ConsoleKey.Enter)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Invalid input. Press enter to continue.");
-                        Console.ReadKey();
-                    }
+                    PressEnterScript();
                     goto SetHeight;
                 }
             }
@@ -347,13 +345,7 @@ namespace Week3Challenges
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input. Press enter to continue.");
-                    while (Console.ReadKey().Key != ConsoleKey.Enter)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Invalid input. Press enter to continue.");
-                        Console.ReadKey();
-                    }
+                    PressEnterScript();
                     goto SetWeight;
                 }
             }
@@ -361,59 +353,192 @@ namespace Week3Challenges
             // Strength
         SetStrength:
             Console.Clear();
-            Random rnd = new Random();
+            Random rndStr = new Random();
             Console.WriteLine($"What is {newCharacter.Name}'s base Strength?\n" +
-                "Enter a number from 10-20 or press R to randomize.");
+                "Enter a number from 10 - 20 or press R to roll a d20.");
             string strength = Console.ReadLine().ToLower();
-            if (strength.StartsWith("1") || strength.StartsWith("2") && strength.Length == 2)
+            bool parseStr = int.TryParse(strength, out int howStrong);
+            if (parseStr && (strength.StartsWith("1") || strength.StartsWith("20")) && strength.Length == 2)
             {
-                bool parseStrength = int.TryParse(strength, out int howStrong);
-                if (parseStrength)
-                {
-                    newCharacter.Strength = howStrong;
-                }
-                else if (strength.StartsWith("r")){
-                    newCharacter.Strength = rnd.Next(10, 20);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid input. Press enter to continue.");
-                    while (Console.ReadKey().Key != ConsoleKey.Enter)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Invalid input. Press enter to continue.");
-                        Console.ReadKey();
-                    }
-                    goto SetStrength;
-                }
+                newCharacter.Strength = howStrong;
+            }
+            else if (strength == "r")
+            {
+                newCharacter.Strength = rndStr.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetStrength;
+            }
+            
+        // Dexterity
+        SetDex:
+            Console.Clear();
+            Random rndDex = new Random();
+            Console.WriteLine($"What is {newCharacter.Name}'s base Dexterity?\n" +
+                "Enter a number from 10 - 20 or press R to roll a d20.");
+            string dexterity = Console.ReadLine().ToLower();
+            bool parseDex = int.TryParse(dexterity, out int howDexterous);
+            if (parseDex && (dexterity.StartsWith("1") || dexterity.StartsWith("20")) && dexterity.Length == 2)
+            {
+                newCharacter.Dexterity = howDexterous;
+            }
+            else if (dexterity == "r")
+            {
+                newCharacter.Dexterity = rndDex.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetDex;
             }
 
-            // Dexterity
-
-
-
-            // Constitution
-
-
+        // Constitution
+        SetCon:
+            Console.Clear();
+            Random rndCon = new Random();
+            Console.WriteLine($"What is {newCharacter.Name}'s base Constitution?\n" +
+                "Enter a number from 10 - 20 or press R to roll a d20.");
+            string constitution = Console.ReadLine().ToLower();
+            bool parseCon = int.TryParse(constitution, out int howConstituted);
+            if (parseCon && (constitution.StartsWith("1") || constitution.StartsWith("20")) && constitution.Length == 2)
+            {
+                newCharacter.Constitution = howConstituted;
+            }
+            else if (constitution == "r")
+            {
+                newCharacter.Constitution = rndCon.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetCon;
+            }
 
             // Intelligence
+        SetInt:
+            Console.Clear();
+            Random rndInt = new Random();
+            Console.WriteLine($"What is {newCharacter.Name}'s base Intelligence?\n" +
+                "Enter a number from 10 - 20 or press R to roll a d20.");
+            string intelligence = Console.ReadLine().ToLower();
+            bool parseInt = int.TryParse(intelligence, out int howIntelligent);
+            if (parseInt && (intelligence.StartsWith("1") || intelligence.StartsWith("20")) && intelligence.Length == 2)
+            {
+                newCharacter.Intelligence = howIntelligent;
+            }
+            else if (intelligence == "r")
+            {
+                newCharacter.Intelligence = rndInt.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetInt;
+            }
 
+        // Wisdom
+        SetWis:
+            Console.Clear();
+            Random rndWis = new Random();
+            Console.WriteLine($"What is {newCharacter.Name}'s base Wisdom?\n" +
+                "Enter a number from 10 - 20 or press R to roll a d20.");
+            string wisdom = Console.ReadLine().ToLower();
+            bool parseWis = int.TryParse(wisdom, out int howWise);
+            if (parseWis && (wisdom.StartsWith("1") || wisdom.StartsWith("20")) && wisdom.Length == 2)
+            {
+                newCharacter.Wisdom = howWise;
+            }
+            else if (wisdom == "r")
+            {
+                newCharacter.Wisdom = rndWis.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetWis;
+            }
 
+        // Perception
+        SetPer:
+            Console.Clear();
+            Random rndPer = new Random();
+            Console.WriteLine($"What is {newCharacter.Name}'s base Perception?\n" +
+                "Enter a number from 10 - 20 or press R to roll a d20.");
+            string perception = Console.ReadLine().ToLower();
+            bool parsePer = int.TryParse(perception, out int howPerceptive);
+            if (parsePer && (perception.StartsWith("1") || perception.StartsWith("20")) && perception.Length == 2)
+            {
+                newCharacter.Perception = howPerceptive;
+            }
+            else if (perception == "r")
+            {
+                newCharacter.Perception = rndPer.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetPer;
+            }
 
-            // Wisdom
+        // Armor
+        SetArm:
+            Console.Clear();
+            Random rndArm = new Random();
+            Console.WriteLine($"What is {newCharacter.Name}'s base Armor?\n" +
+                "Enter a number from 10 - 20 or press R to roll a d20.");
+            string armor = Console.ReadLine().ToLower();
+            bool parseArm = int.TryParse(armor, out int howArmored);
+            if (parseArm && (armor.StartsWith("1") || armor.StartsWith("20")) && armor.Length == 2)
+            {
+                newCharacter.Armor = howArmored;
+            }
+            else if (armor == "r")
+            {
+                newCharacter.Armor = rndArm.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetArm;
+            }
 
+        // Health
+        SetHealth:
+            Console.Clear();
+            Random rndHealth = new Random();
+            Console.WriteLine($"What is {newCharacter.Name}'s base Health?\n" +
+                "Enter a number from 10 - 32 or press R to roll 4d8.");
+            string health = Console.ReadLine().ToLower();
+            bool parseHealth = int.TryParse(health, out int howHealthy);
+            if (parseHealth && (health.StartsWith("1") || health.StartsWith("2") || (health.StartsWith("3") && howHealthy < 33)) && health.Length == 2)
+            {
+                newCharacter.Health = howHealthy;
+            }
+            else if (health == "r")
+            {
+                newCharacter.Health = rndHealth.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetHealth;
+            }
 
-
-            // Perception
-
-
-
-            // Armor
-
-
-
-            // Health
-
+            Console.Clear();
+            string characterDetails = $"Your character's name is {newCharacter.Name}.\n" +
+                $"{newCharacter.Name} is {newCharacter.Height} inches tall and weighs {newCharacter.Weight} pounds.\n" +
+                $"{newCharacter.Name}'s stats are as follows:\n" +
+                $"Strength: {newCharacter.Strength}\n" +
+                $"Dexterity: {newCharacter.Dexterity}\n" +
+                $"Constitution: {newCharacter.Constitution}\n" +
+                $"Intelligence: {newCharacter.Intelligence}\n" +
+                $"Wisdom: {newCharacter.Wisdom}\n" +
+                $"Perception: {newCharacter.Perception}\n" +
+                $"Armor: {newCharacter.Armor}\n" +
+                $"Health: {newCharacter.Health}";
+            return characterDetails;
         }
     }
 }
