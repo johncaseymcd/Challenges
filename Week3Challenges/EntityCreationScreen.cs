@@ -6,11 +6,22 @@ using System.Threading.Tasks;
 
 namespace Week3Challenges
 {
-    class CharacterCreationScreen
+    class EntityCreationScreen
     {
+        // New Player Character variables
         Entity newCharacter = new Entity();
         CharacterCRUD characterInfo = new CharacterCRUD();
         List<Entity> _characterList = new List<Entity>();
+
+        // New Monster variables
+        Entity newMonster = new Entity();
+        MonsterCRUD monsterInfo = new MonsterCRUD();
+        List<Entity> _monsterList = new List<Entity>();
+
+        // New NPC variables
+        Entity newNPC = new Entity();
+        NonPlayerCRUD npcInfo = new NonPlayerCRUD();
+        List<Entity> _npcList = new List<Entity>();
 
         public void Run()
         {
@@ -71,11 +82,12 @@ namespace Week3Challenges
                         }
                 }
             }
-            else{
+            else
+            {
                 PressEnterScript();
                 goto MainMenu;
             }
-            
+
         }
 
         private void PressEnterScript()
@@ -152,7 +164,8 @@ namespace Week3Challenges
             }
         }
 
-        private void ChooseClass_Character() {
+        private void ChooseClass_Character()
+        {
             List<string> characterClasses = characterInfo.FindClass_Character();
 
         ClassSelect:
@@ -160,7 +173,7 @@ namespace Week3Challenges
 
             Console.WriteLine("Choose a character class:\n");
             int classCount = 0;
-            foreach(string className in characterClasses)
+            foreach (string className in characterClasses)
             {
                 classCount++;
                 Console.WriteLine($"{classCount}. {className.Remove(0, 2)}");
@@ -204,7 +217,7 @@ namespace Week3Challenges
                         break;
                     default:
                         Console.WriteLine("Invalid input. Press enter to continue.");
-                        if(Console.ReadKey().Key == ConsoleKey.Enter)
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
                         {
                             goto ClassSelect;
                         }
@@ -238,7 +251,7 @@ namespace Week3Challenges
                 string alignment = alignmentName.Replace('_', ' ');
                 Console.WriteLine($"{alignmentCount}. {alignment.Remove(0, 2)}");
             }
-            
+
 
             string input = Console.ReadLine();
             bool parsed = int.TryParse(input, out int whichAlignment);
@@ -332,7 +345,7 @@ namespace Week3Challenges
 
             string weight = Console.ReadLine();
             bool parseWeight = int.TryParse(weight, out int howHeavy);
-            if(parseWeight && howHeavy >= 25 && howHeavy <= 400)
+            if (parseWeight && howHeavy >= 25 && howHeavy <= 400)
             {
                 newCharacter.Weight = howHeavy;
             }
@@ -350,7 +363,7 @@ namespace Week3Challenges
                 }
             }
 
-            // Strength
+        // Strength
         SetStrength:
             Console.Clear();
             Random rndStr = new Random();
@@ -371,7 +384,7 @@ namespace Week3Challenges
                 PressEnterScript();
                 goto SetStrength;
             }
-            
+
         // Dexterity
         SetDex:
             Console.Clear();
@@ -416,7 +429,7 @@ namespace Week3Challenges
                 goto SetCon;
             }
 
-            // Intelligence
+        // Intelligence
         SetInt:
             Console.Clear();
             Random rndInt = new Random();
@@ -539,6 +552,213 @@ namespace Week3Challenges
                 $"Armor: {newCharacter.Armor}\n" +
                 $"Health: {newCharacter.Health}";
             return characterDetails;
+        }
+
+        private void ChooseRace_Monster()
+        {
+            List<string> monsterRaces = monsterInfo.FindRace_Monster();
+
+        RaceSelect:
+            Console.Clear();
+
+            Console.WriteLine("Choose the monster's race:\n");
+            int raceCount = 0;
+            foreach (string raceName in monsterRaces)
+            {
+                raceCount++;
+                Console.WriteLine($"{raceCount}. {raceName.Remove(0, 2)}");
+            }
+
+            string input = Console.ReadLine();
+            bool parsed = int.TryParse(input, out int whichRace);
+
+            if (parsed)
+            {
+                switch (whichRace)
+                {
+                    case 1:
+                        newMonster.Race = EntityRace.M_Bugbear;
+                        break;
+                    case 2:
+                        newMonster.Race = EntityRace.M_Centaur;
+                        break;
+                    case 3:
+                        newMonster.Race = EntityRace.M_Goblin;
+                        break;
+                    case 4:
+                        newMonster.Race = EntityRace.M_Hobgoblin;
+                        break;
+                    case 5:
+                        newMonster.Race = EntityRace.M_Kenku;
+                        break;
+                    case 6:
+                        newMonster.Race = EntityRace.M_Kobold;
+                        break;
+                    case 7:
+                        newMonster.Race = EntityRace.M_Lizardfolk;
+                        break;
+                    case 8:
+                        newMonster.Race = EntityRace.M_Minotaur;
+                        break;
+                    case 9:
+                        newMonster.Race = EntityRace.B_Orc;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Press enter to continue.");
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        {
+                            goto RaceSelect;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            goto default;
+                        }
+                }
+            }
+            else
+            {
+                PressEnterScript();
+                goto RaceSelect;
+            }
+        }
+
+        private void ChooseClass_Monster()
+        {
+            List<string> monsterClasses = monsterInfo.FindClass_Monster();
+
+        ClassSelect:
+            Console.Clear();
+
+            Console.WriteLine("Choose the monster's class:\n");
+            int classCount = 0;
+            foreach (string className in monsterClasses)
+            {
+                classCount++;
+                Console.WriteLine($"{classCount}. {className.Remove(0, 2)}");
+            }
+
+            string input = Console.ReadLine();
+            bool parsed = int.TryParse(input, out int whichClass);
+
+            if (parsed)
+            {
+                switch (whichClass)
+                {
+                    case 1:
+                        newMonster.EntityClass = EntityClass.B_Barbarian;
+                        break;
+                    case 2:
+                        newMonster.EntityClass = EntityClass.B_Fighter;
+                        break;
+                    case 3:
+                        newMonster.EntityClass = EntityClass.B_Ranger;
+                        break;
+                    case 4:
+                        newMonster.EntityClass = EntityClass.B_Rogue;
+                        break;
+                    case 5:
+                        newMonster.EntityClass = EntityClass.B_Wizard;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Press enter to continue.");
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        {
+                            goto ClassSelect;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            goto default;
+                        }
+                }
+            }
+            else
+            {
+                PressEnterScript();
+                goto ClassSelect;
+            }
+        }
+
+        private void ChooseAlignment_Monster()
+        {
+            List<string> monsterAlignments = monsterInfo.FindAlignment_Monster();
+
+        AlignmentSelect:
+            Console.Clear();
+
+            Console.WriteLine("Choose the monster's alignment:\n");
+            int alignmentCount = 0;
+            foreach(string alignmentName in monsterAlignments)
+            {
+                alignmentCount++;
+                string alignment = alignmentName.Replace('_', ' ');
+                Console.WriteLine($"{alignmentCount}. {alignment.Remove(0, 2)}");
+            }
+
+            string input = Console.ReadLine();
+            bool parsed = int.TryParse(input, out int whichAlignment);
+
+            if (parsed)
+            {
+                switch (whichAlignment)
+                {
+                    case 1:
+                        newMonster.Alignment = EntityAlignment.B_True_Neutral;
+                        break;
+                    case 2:
+                        newMonster.Alignment = EntityAlignment.B_Chaotic_Neutral;
+                        break;
+                    case 3:
+                        newMonster.Alignment = EntityAlignment.B_Lawful_Evil;
+                        break;
+                    case 4:
+                        newMonster.Alignment = EntityAlignment.B_Neutral_Evil;
+                        break;
+                    case 5:
+                        newMonster.Alignment = EntityAlignment.B_Chaotic_Evil;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Press enter to continue.");
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        {
+                            goto AlignmentSelect;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            goto default;
+                        }
+                }
+            }
+            else
+            {
+                PressEnterScript();
+                goto AlignmentSelect;
+            }
+        }
+
+        private string EnterDetails_Monster()
+        {
+            // Name
+            Console.WriteLine("What is the monster's name?");
+            newMonster.Name = Console.ReadLine();
+
+        // Height
+        SetHeight:
+            Console.Clear();
+            Console.WriteLine($"How tall is {newMonster.Name} (in inches)?\n");
+            string height = Console.ReadLine();
+            bool parseHeight = int.TryParse(height, out int howTall);
+            if (parseHeight && howTall >= 48 && howTall <= 120)
+            {
+                newMonster.Height = howTall;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Monsters should be between 48 and 120 inches tall. Press enter to continue.");
+                // if else to check ConsoleKey.
+            }
         }
     }
 }

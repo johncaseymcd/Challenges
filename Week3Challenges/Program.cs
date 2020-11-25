@@ -18,7 +18,7 @@ namespace Week3Challenges
                     "3. Delete an existing character\n" +
                     "4. Exit\n");
 
-                CharacterCreationScreen create = new CharacterCreationScreen();
+                EntityCreationScreen create = new EntityCreationScreen();
                // CharacterEditScreen edit = new CharacterEditScreen();
               //  CharacterDeleteScreen delete = new CharacterDeleteScreen();
 
