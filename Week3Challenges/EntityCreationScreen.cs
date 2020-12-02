@@ -309,7 +309,7 @@ namespace Week3Challenges
 
         private string EnterDetails_Character()
         {
-            // Name
+        // Name
             Console.WriteLine("What is your character's name?\n");
             newCharacter.Name = Console.ReadLine();
 
@@ -366,12 +366,12 @@ namespace Week3Challenges
         // Strength
         SetStrength:
             Console.Clear();
-            Random rndStr = new Random();
+            var rndStr = new Random();
             Console.WriteLine($"What is {newCharacter.Name}'s base Strength?\n" +
                 "Enter a number from 10 - 20 or press R to roll a d20.");
             string strength = Console.ReadLine().ToLower();
             bool parseStr = int.TryParse(strength, out int howStrong);
-            if (parseStr && (strength.StartsWith("1") || strength.StartsWith("20")) && strength.Length == 2)
+            if (parseStr && howStrong >= 10 && howStrong <= 20)
             {
                 newCharacter.Strength = howStrong;
             }
@@ -388,12 +388,12 @@ namespace Week3Challenges
         // Dexterity
         SetDex:
             Console.Clear();
-            Random rndDex = new Random();
+            var rndDex = new Random();
             Console.WriteLine($"What is {newCharacter.Name}'s base Dexterity?\n" +
                 "Enter a number from 10 - 20 or press R to roll a d20.");
             string dexterity = Console.ReadLine().ToLower();
             bool parseDex = int.TryParse(dexterity, out int howDexterous);
-            if (parseDex && (dexterity.StartsWith("1") || dexterity.StartsWith("20")) && dexterity.Length == 2)
+            if (parseDex && howDexterous >= 10 && howDexterous <= 20)
             {
                 newCharacter.Dexterity = howDexterous;
             }
@@ -410,12 +410,12 @@ namespace Week3Challenges
         // Constitution
         SetCon:
             Console.Clear();
-            Random rndCon = new Random();
+            var rndCon = new Random();
             Console.WriteLine($"What is {newCharacter.Name}'s base Constitution?\n" +
                 "Enter a number from 10 - 20 or press R to roll a d20.");
             string constitution = Console.ReadLine().ToLower();
             bool parseCon = int.TryParse(constitution, out int howConstituted);
-            if (parseCon && (constitution.StartsWith("1") || constitution.StartsWith("20")) && constitution.Length == 2)
+            if (parseCon && howConstituted >= 10 && howConstituted <= 20)
             {
                 newCharacter.Constitution = howConstituted;
             }
@@ -429,15 +429,15 @@ namespace Week3Challenges
                 goto SetCon;
             }
 
-        // Intelligence
+         // Intelligence
         SetInt:
             Console.Clear();
-            Random rndInt = new Random();
+            var rndInt = new Random();
             Console.WriteLine($"What is {newCharacter.Name}'s base Intelligence?\n" +
                 "Enter a number from 10 - 20 or press R to roll a d20.");
             string intelligence = Console.ReadLine().ToLower();
             bool parseInt = int.TryParse(intelligence, out int howIntelligent);
-            if (parseInt && (intelligence.StartsWith("1") || intelligence.StartsWith("20")) && intelligence.Length == 2)
+            if (parseInt && howIntelligent >= 10 && howIntelligent <= 20)
             {
                 newCharacter.Intelligence = howIntelligent;
             }
@@ -451,15 +451,15 @@ namespace Week3Challenges
                 goto SetInt;
             }
 
-        // Wisdom
+         // Wisdom
         SetWis:
             Console.Clear();
-            Random rndWis = new Random();
+            var rndWis = new Random();
             Console.WriteLine($"What is {newCharacter.Name}'s base Wisdom?\n" +
                 "Enter a number from 10 - 20 or press R to roll a d20.");
             string wisdom = Console.ReadLine().ToLower();
             bool parseWis = int.TryParse(wisdom, out int howWise);
-            if (parseWis && (wisdom.StartsWith("1") || wisdom.StartsWith("20")) && wisdom.Length == 2)
+            if (parseWis && howWise >= 10 && howWise <= 20)
             {
                 newCharacter.Wisdom = howWise;
             }
@@ -476,12 +476,12 @@ namespace Week3Challenges
         // Perception
         SetPer:
             Console.Clear();
-            Random rndPer = new Random();
+            var rndPer = new Random();
             Console.WriteLine($"What is {newCharacter.Name}'s base Perception?\n" +
                 "Enter a number from 10 - 20 or press R to roll a d20.");
             string perception = Console.ReadLine().ToLower();
             bool parsePer = int.TryParse(perception, out int howPerceptive);
-            if (parsePer && (perception.StartsWith("1") || perception.StartsWith("20")) && perception.Length == 2)
+            if (parsePer && howPerceptive >= 10 && howPerceptive <= 20)
             {
                 newCharacter.Perception = howPerceptive;
             }
@@ -495,15 +495,15 @@ namespace Week3Challenges
                 goto SetPer;
             }
 
-        // Armor
+         // Armor
         SetArm:
             Console.Clear();
-            Random rndArm = new Random();
+            var rndArm = new Random();
             Console.WriteLine($"What is {newCharacter.Name}'s base Armor?\n" +
                 "Enter a number from 10 - 20 or press R to roll a d20.");
             string armor = Console.ReadLine().ToLower();
             bool parseArm = int.TryParse(armor, out int howArmored);
-            if (parseArm && (armor.StartsWith("1") || armor.StartsWith("20")) && armor.Length == 2)
+            if (parseArm && howArmored >= 10 && howArmored <= 20)
             {
                 newCharacter.Armor = howArmored;
             }
@@ -520,18 +520,23 @@ namespace Week3Challenges
         // Health
         SetHealth:
             Console.Clear();
-            Random rndHealth = new Random();
+            var rndHealth = new Random();
+            int healthSum = 0;
             Console.WriteLine($"What is {newCharacter.Name}'s base Health?\n" +
                 "Enter a number from 10 - 32 or press R to roll 4d8.");
             string health = Console.ReadLine().ToLower();
             bool parseHealth = int.TryParse(health, out int howHealthy);
-            if (parseHealth && (health.StartsWith("1") || health.StartsWith("2") || (health.StartsWith("3") && howHealthy < 33)) && health.Length == 2)
+            if (parseHealth && howHealthy >= 10 && howHealthy <= 32)
             {
                 newCharacter.Health = howHealthy;
             }
             else if (health == "r")
             {
-                newCharacter.Health = rndHealth.Next(10, 20);
+                for (int dieRolls = 1; dieRolls <=4; dieRolls++)
+                { 
+                    healthSum += rndHealth.Next(1, 8);
+                }
+                newCharacter.Health = healthSum;
             }
             else
             {
@@ -740,7 +745,7 @@ namespace Week3Challenges
 
         private string EnterDetails_Monster()
         {
-            // Name
+        // Name
             Console.WriteLine("What is the monster's name?");
             newMonster.Name = Console.ReadLine();
 
@@ -757,8 +762,235 @@ namespace Week3Challenges
             else
             {
                 Console.WriteLine("Invalid input. Monsters should be between 48 and 120 inches tall. Press enter to continue.");
-                // if else to check ConsoleKey.
+                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                {
+                    goto SetHeight;
+                }
+                else
+                {
+                    PressEnterScript();
+                    goto SetHeight;
+                }
             }
+
+        // Weight
+        SetWeight:
+            Console.Clear();
+            Console.WriteLine($"How much does {newMonster.Name} weigh (in pounds)?\n");
+            string weight = Console.ReadLine();
+            bool parseWeight = int.TryParse(weight, out int howHeavy);
+            if (parseWeight && howHeavy >= 50 && howHeavy <= 600)
+            {
+                newMonster.Weight = howHeavy;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Monsters should weigh between 50 and 600 pounds. Press enter to continue.");
+                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                {
+                    goto SetWeight;
+                }
+                else
+                {
+                    PressEnterScript();
+                    goto SetWeight;
+                }
+            }
+
+        // Strength
+        SetStrength:
+            Console.Clear();
+            var rndStr = new Random();
+            Console.WriteLine($"What is {newMonster.Name}'s base strength?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string strength = Console.ReadLine().ToLower();
+            bool parseStr = int.TryParse(strength, out int howStrong);
+            if (parseStr && howStrong >= 10 && howStrong <= 20)
+            {
+                newMonster.Strength = howStrong;
+            }
+            else if (strength == "r")
+            {
+                newMonster.Strength = rndStr.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetStrength;
+            }
+
+        // Dexterity
+        SetDexterity:
+            Console.Clear();
+            var rndDex = new Random();
+            Console.WriteLine($"What is {newMonster.Name}'s base dexterity?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string dexterity = Console.ReadLine().ToLower();
+            bool parseDex = int.TryParse(dexterity, out int howDexterous);
+            if (parseDex && howDexterous >= 10 && howDexterous <= 20)
+            {
+                newMonster.Dexterity = howDexterous;
+            }
+            else if (dexterity == "r")
+            {
+                newMonster.Dexterity = rndDex.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetDexterity;
+            }
+
+        // Constitution
+        SetConstitution:
+            Console.Clear();
+            var rndCon = new Random();
+            Console.WriteLine($"What is {newMonster.Name}'s base constitution?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string constitution = Console.ReadLine().ToLower();
+            bool parseCon = int.TryParse(constitution, out int howConstituted);
+            if (parseCon && howConstituted >= 10 && howConstituted <= 20)
+            {
+                newMonster.Constitution = howConstituted;
+            }
+            else if (constitution == "r")
+            {
+                newMonster.Dexterity = rndCon.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetConstitution;
+            }
+
+        // Intelligence
+        SetIntelligence:
+            Console.Clear();
+            var rndInt = new Random();
+            Console.WriteLine($"What is {newMonster.Name}'s base intelligence?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string intelligence = Console.ReadLine().ToLower();
+            bool parseInt = int.TryParse(intelligence, out int howIntelligent);
+            if (parseInt && howIntelligent >= 10 && howIntelligent <= 20)
+            {
+                newMonster.Intelligence = howIntelligent;
+            }
+            else if (constitution == "r")
+            {
+                newMonster.Intelligence = rndInt.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetIntelligence;
+            }
+
+        // Wisdom
+        SetWisdom:
+            Console.Clear();
+            var rndWis = new Random();
+            Console.WriteLine($"What is {newMonster.Name}'s base wisdom?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string wisdom = Console.ReadLine().ToLower();
+            bool parseWis = int.TryParse(wisdom, out int howWise);
+            if (parseWis && howWise >= 10 && howWise <= 20)
+            {
+                newMonster.Wisdom = howWise;
+            }
+            else if (wisdom == "r")
+            {
+                newMonster.Wisdom = rndWis.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetWisdom;
+            }
+
+        // Perception
+        SetPerception:
+            Console.Clear();
+            var rndPer = new Random();
+            Console.WriteLine($"What is {newMonster.Name}'s base perception?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string perception = Console.ReadLine().ToLower();
+            bool parsePer = int.TryParse(perception, out int howPerceptive);
+            if (parsePer && howPerceptive >= 10 && howPerceptive <= 20)
+            {
+                newMonster.Perception = howPerceptive;
+            }
+            else if (perception == "r")
+            {
+                newMonster.Perception = rndPer.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetPerception;
+            }
+
+        // Armor
+        SetArmor:
+            Console.Clear();
+            var rndArm = new Random();
+            Console.WriteLine($"What is {newMonster.Name}'s base armor?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string armor = Console.ReadLine().ToLower();
+            bool parseArm = int.TryParse(armor, out int howArmored);
+            if (parseArm && howArmored >= 10 && howArmored <= 20)
+            {
+                newMonster.Armor = howArmored;
+            }
+            else if (armor == "r")
+            {
+                newMonster.Armor = rndArm.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetArmor;
+            }
+
+        // Health
+        SetHealth:
+            Console.Clear();
+            var rndHealth = new Random();
+            int healthSum = 0;
+            Console.WriteLine($"What is {newMonster.Name}'s base health?\n" +
+                $"Enter a number from 10 - 32 or press R to roll 4d8.");
+            string health = Console.ReadLine().ToLower();
+            bool parseHealth = int.TryParse(health, out int howHealthy);
+            if (parseHealth && howHealthy >= 10 && howHealthy <= 32)
+            {
+                newMonster.Health = howHealthy;
+            }
+            else if (health == "r")
+            {
+                for (int dieRolls = 1; dieRolls <= 4; dieRolls++)
+                {
+                    healthSum += rndHealth.Next(1, 8);
+                }
+                newMonster.Health = healthSum;
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetHealth;
+            }
+
+            Console.Clear();
+            string monsterDetails = $"Your character's name is {newCharacter.Name}.\n" +
+                $"{newMonster.Name} is {newMonster.Height} inches tall and weighs {newMonster.Weight} pounds.\n" +
+                $"{newMonster.Name}'s stats are as follows:\n" +
+                $"Strength: {newMonster.Strength}\n" +
+                $"Dexterity: {newMonster.Dexterity}\n" +
+                $"Constitution: {newMonster.Constitution}\n" +
+                $"Intelligence: {newMonster.Intelligence}\n" +
+                $"Wisdom: {newMonster.Wisdom}\n" +
+                $"Perception: {newMonster.Perception}\n" +
+                $"Armor: {newMonster.Armor}\n" +
+                $"Health: {newMonster.Health}";
+            return monsterDetails;
         }
     }
 }
