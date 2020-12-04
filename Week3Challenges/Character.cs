@@ -214,7 +214,7 @@ namespace Week3Challenges
         // Helper method
         public override Entity GetName(string name)
         {
-            foreach (Entity character in _characterList)
+            foreach (var character in _characterList)
             {
                 if (character.Name.ToLower() == name.ToLower())
                 {
