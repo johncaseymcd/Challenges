@@ -23,50 +23,39 @@ namespace Week3Challenges
         NonPlayerCRUD npcInfo = new NonPlayerCRUD();
         List<Entity> _npcList = new List<Entity>();
 
+        // List of all characters
+        List<Entity> _allEntities = new List<Entity>();
+
         public void Run()
         {
+            Menu();
+        }
+
+        private void Menu()
+        {
         MainMenu:
-            Console.Clear();
-            Console.WriteLine("What kind of character are you creating?\n" +
-                "1. Player Character\n" +
-                "2. Monster\n" +
-                "3. Non-Player Character\n");
-            string input = Console.ReadLine();
-            bool parsed = int.TryParse(input, out int whichCharacter);
-            if (parsed)
+            Console.WriteLine("What would you like to do?\n" +
+                "1. Create a character\n" +
+                "2. View all characters\n" +
+                "3. Edit an existing character\n" +
+                "4. Delete an existing character\n" +
+                "5. Exit");
+            string mainMenuChoice = Console.ReadLine();
+            bool parseMainMenu = int.TryParse(mainMenuChoice, out int whatToDo);
+            if (parseMainMenu)
             {
-                switch (whichCharacter)
+                switch (whatToDo)
                 {
                     case 1:
-                        // Code for Character creation
-                        ChooseRace_Character();
-                        ChooseClass_Character();
-                        ChooseAlignment_Character();
-                        Console.Clear();
-                        string displayDetails = EnterDetails_Character();
-                        Console.WriteLine(displayDetails);
-                        Console.WriteLine("Would you like to edit your character (y/n)?");
-                        string toChange = Console.ReadLine().ToLower();
-                        if (toChange == "y")
-                        {
-                            Console.Clear();
-                            EnterDetails_Character();
-                        }
-                        else
-                        {
-                            _characterList.Add(newCharacter);
-                            Console.WriteLine("Character successfully created!");
-                            Console.ReadLine();
-                        }
-                        break;
+                        goto EntityCreate;
                     case 2:
-                        // Code for Monster creation
-                        Console.WriteLine("Test 2");
-                        Console.ReadLine();
-                        break;
+                        goto ViewCharacters;
                     case 3:
-                        // Code for NPC creation
-                        Console.WriteLine("Test 3");
+                        goto EditCharacter;
+                    case 4:
+                        goto DeleteCharacter;
+                    case 5:
+                        Console.WriteLine("Goodbye!");
                         Console.ReadLine();
                         break;
                     default:
@@ -74,6 +63,106 @@ namespace Week3Challenges
                         if (Console.ReadKey().Key == ConsoleKey.Enter)
                         {
                             goto MainMenu;
+                        }
+                        else
+                        {
+                            PressEnterScript();
+                            goto default;
+                        }
+                }
+            }
+            else
+            {
+                PressEnterScript();
+                goto MainMenu;
+            }
+
+        EntityCreate:
+            Console.Clear();
+            Console.WriteLine("What kind of character are you creating?\n" +
+                "1. Player Character\n" +
+                "2. Monster\n" +
+                "3. Non-Player Character\n");
+            string createChoice = Console.ReadLine();
+            bool parseCreateChoice = int.TryParse(createChoice, out int whichCharacter);
+            if (parseCreateChoice)
+            {
+                switch (whichCharacter)
+                {
+                    case 1:
+                    // Code for Character creation
+                    CreateCharacter:
+                        ChooseRace_Character();
+                        ChooseClass_Character();
+                        ChooseAlignment_Character();
+                        Console.Clear();
+                        string displayCharacterDetails = EnterDetails_Character();
+                        Console.WriteLine(displayCharacterDetails);
+                        Console.WriteLine("Would you like to edit your character (y/n)?");
+                        string toChange = Console.ReadLine().ToLower();
+                        if (toChange == "y")
+                        {
+                            goto CreateCharacter;
+                        }
+                        else
+                        {
+                            _characterList.Add(newCharacter);
+                            Console.WriteLine("Character successfully created!");
+                            Console.ReadLine();
+                            goto MainMenu;
+                        }
+                        break;
+                    case 2:
+                    // Code for Monster creation
+                    CreateMonster:
+                        ChooseRace_Monster();
+                        ChooseClass_Monster();
+                        ChooseAlignment_Monster();
+                        Console.Clear();
+                        string displayMonsterDetails = EnterDetails_Monster();
+                        Console.WriteLine(displayMonsterDetails);
+                        Console.WriteLine("Would you like to edit your character (y/n)?");
+                        string toChangeMonster = Console.ReadLine().ToLower();
+                        if (toChangeMonster == "y")
+                        {
+                            goto CreateMonster;
+                        }
+                        else
+                        {
+                            _monsterList.Add(newMonster);
+                            Console.WriteLine("Monster successfully created!");
+                            Console.ReadLine();
+                            goto MainMenu;
+                        }
+                        break;
+                    case 3:
+                    // Code for NPC creation
+                    CreateNPC:
+                        ChooseRace_NPC();
+                        ChooseClass_NPC();
+                        ChooseAlignment_NPC();
+                        Console.Clear();
+                        string displayNPCDetails = EnterDetails_NPC();
+                        Console.WriteLine(displayNPCDetails);
+                        Console.WriteLine("Would you like to edit this character (y/n)?");
+                        string toChangeNPC = Console.ReadLine().ToLower();
+                        if (toChangeNPC == "y")
+                        {
+                            goto CreateNPC;
+                        }
+                        else
+                        {
+                            _npcList.Add(newNPC);
+                            Console.WriteLine("NPC successfully created!");
+                            Console.ReadLine();
+                            goto MainMenu;
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Press enter to continue.");
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        {
+                            goto EntityCreate;
                         }
                         else
                         {
@@ -85,9 +174,100 @@ namespace Week3Challenges
             else
             {
                 PressEnterScript();
-                goto MainMenu;
+                goto EntityCreate;
             }
 
+        ViewCharacters:
+            Console.WriteLine("What kind of characters would you like to view?\n" +
+                "1. Player characters\n" +
+                "2. Monsters\n" +
+                "3. NPCs\n" +
+                "4. All characters\n" +
+                "5. Exit");
+            string viewChoice = Console.ReadLine();
+            bool parseViewChoice = int.TryParse(viewChoice, out int whatToView);
+            if (parseViewChoice)
+            {
+                switch (whatToView)
+                {
+                    case 1:
+                        int characterCount = 0;
+                        foreach(var character in _characterList)
+                        {
+                            characterCount++;
+                            Console.WriteLine($"{characterCount}. {character.Name}: {character.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {character.EntityClass.ToString().Remove(0, 2)} {character.Race.ToString().Remove(0, 2)}\n");
+                        }
+                        break;
+                    case 2:
+                        int monsterCount = 0;
+                        foreach(var monster in _monsterList)
+                        {
+                            monsterCount++;
+                            Console.WriteLine($"{monsterCount}. {monster.Name}: {monster.Alignment.ToString().Replace('_', ' ').Remove(0,2)} {monster.EntityClass.ToString().Remove(0, 2)} {monster.Race.ToString().Remove(0,2)}\n");
+                        }
+                        break;
+                    case 3:
+                        int npcCount = 0;
+                        foreach(var npc in _npcList)
+                        {
+                            npcCount++;
+                            Console.WriteLine($"{npcCount}. {npc.Name}: {npc.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {npc.EntityClass.ToString().Remove(0, 2)} {npc.Race.ToString().Remove(0, 2)}");
+                        }
+                        break;
+                    case 4:
+                        foreach(var character in _characterList)
+                        {
+                            _allEntities.Add(character);
+                        }
+
+                        foreach(var monster in _monsterList)
+                        {
+                            _allEntities.Add(monster);
+                        }
+
+                        foreach(var npc in _npcList)
+                        {
+                            _allEntities.Add(npc);
+                        }
+
+                        int entityCount = 0;
+                        foreach(var entity in _allEntities)
+                        {
+                            entityCount++;
+                            if (entityCount <= _characterList.Count)
+                            {
+                                Console.WriteLine($"{entityCount}. {entity.Name} is a player character who is a {entity.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {entity.EntityClass.ToString().Remove(0, 2)} {entity.Race.ToString().Remove(0, 2)}");
+                            }
+                            else if(entityCount > _characterList.Count && entityCount <= (_characterList.Count + _monsterList.Count))
+                            {
+                                Console.WriteLine($"{entityCount}. {entity.Name} is a monster who is a {entity.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {entity.EntityClass.ToString().Remove(0, 2)} {entity.Race.ToString().Remove(0, 2)}");
+                            }
+                            else if (entityCount > _characterList.Count + _monsterList.Count)
+                            {
+                                Console.WriteLine($"{entityCount}. {entity.Name} is an NPC who is a {entity.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {entity.EntityClass.ToString().Remove(0, 2)} {entity.Race.ToString().Remove(0, 2)}");
+                            }
+                        }
+                        break;
+                    case 5:
+                        goto MainMenu;
+                    default:
+                        Console.WriteLine("Invalid input. Press enter to continue.");
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        {
+                            goto ViewCharacters;
+                        }
+                        else
+                        {
+                            PressEnterScript();
+                            goto ViewCharacters;
+                        }
+                }
+            }
+            else
+            {
+                PressEnterScript();
+                goto ViewCharacters;
+            }
         }
 
         private void PressEnterScript()
@@ -237,7 +417,7 @@ namespace Week3Challenges
 
         private void ChooseAlignment_Character()
         {
-            List<string> characterAlignments = characterInfo.FindAlignment_Character();
+            List<string> characterAlignments = characterInfo.FindAlignment_CharacterAndNPC();
 
         AlignmentSelect:
             Console.Clear();
@@ -310,7 +490,7 @@ namespace Week3Challenges
         private string EnterDetails_Character()
         {
         // Name
-            Console.WriteLine("What is your character's name?\n");
+            Console.WriteLine("What is the character's name?\n");
             newCharacter.Name = Console.ReadLine();
 
         // Height
@@ -534,7 +714,7 @@ namespace Week3Challenges
             {
                 for (int dieRolls = 1; dieRolls <=4; dieRolls++)
                 { 
-                    healthSum += rndHealth.Next(1, 8);
+                    healthSum += rndHealth.Next(3, 8);
                 }
                 newCharacter.Health = healthSum;
             }
@@ -546,6 +726,7 @@ namespace Week3Challenges
 
             Console.Clear();
             string characterDetails = $"Your character's name is {newCharacter.Name}.\n" +
+                $"{newCharacter.Name} is a {newCharacter.Alignment.ToString().Replace('_', ' ').Remove(0,2)} {newCharacter.EntityClass.ToString().Remove(0,2)} {newCharacter.Race.ToString().Remove(0,2)}.\n" +
                 $"{newCharacter.Name} is {newCharacter.Height} inches tall and weighs {newCharacter.Weight} pounds.\n" +
                 $"{newCharacter.Name}'s stats are as follows:\n" +
                 $"Strength: {newCharacter.Strength}\n" +
@@ -968,7 +1149,7 @@ namespace Week3Challenges
             {
                 for (int dieRolls = 1; dieRolls <= 4; dieRolls++)
                 {
-                    healthSum += rndHealth.Next(1, 8);
+                    healthSum += rndHealth.Next(3, 8);
                 }
                 newMonster.Health = healthSum;
             }
@@ -979,7 +1160,8 @@ namespace Week3Challenges
             }
 
             Console.Clear();
-            string monsterDetails = $"Your character's name is {newCharacter.Name}.\n" +
+            string monsterDetails = $"Your character's name is {newMonster.Name}.\n" +
+                $"{newMonster.Name} is a {newMonster.Alignment.ToString().Replace('_', ' ').Remove(0,2)} {newMonster.EntityClass.ToString().Remove(0,2)} {newMonster.Race.ToString().Remove(0,2)}.\n" +
                 $"{newMonster.Name} is {newMonster.Height} inches tall and weighs {newMonster.Weight} pounds.\n" +
                 $"{newMonster.Name}'s stats are as follows:\n" +
                 $"Strength: {newMonster.Strength}\n" +
@@ -991,6 +1173,481 @@ namespace Week3Challenges
                 $"Armor: {newMonster.Armor}\n" +
                 $"Health: {newMonster.Health}";
             return monsterDetails;
+        }
+
+        private void ChooseRace_NPC()
+        {
+            var npcRaces = npcInfo.GetAllRaces();
+
+        RaceSelect:
+            Console.Clear();
+            Console.WriteLine("Choose a race:\n");
+            int raceCount = 0;
+            foreach (string race in npcRaces)
+            {
+                raceCount++;
+                Console.WriteLine($"{raceCount}. {race.Remove(0, 2)}");
+            }
+
+            string input = Console.ReadLine();
+            bool parsed = int.TryParse(input, out int whichRace);
+
+            if (parsed)
+            {
+                switch (whichRace)
+                {
+                    case 1:
+                        newNPC.Race = EntityRace.M_Bugbear;
+                        break;
+                    case 2:
+                        newNPC.Race = EntityRace.M_Centaur;
+                        break;
+                    case 3:
+                        newNPC.Race = EntityRace.C_Dwarf;
+                        break;
+                    case 4:
+                        newNPC.Race = EntityRace.C_Elf;
+                        break;
+                    case 5:
+                        newNPC.Race = EntityRace.C_Gnome;
+                        break;
+                    case 6:
+                        newNPC.Race = EntityRace.M_Goblin;
+                        break;
+                    case 7:
+                        newNPC.Race = EntityRace.C_Halfling;
+                        break;
+                    case 8:
+                        newNPC.Race = EntityRace.M_Hobgoblin;
+                        break;
+                    case 9:
+                        newNPC.Race = EntityRace.C_Human;
+                        break;
+                    case 10:
+                        newNPC.Race = EntityRace.M_Kenku;
+                        break;
+                    case 11:
+                        newNPC.Race = EntityRace.M_Kobold;
+                        break;
+                    case 12:
+                        newNPC.Race = EntityRace.M_Lizardfolk;
+                        break;
+                    case 13:
+                        newNPC.Race = EntityRace.M_Minotaur;
+                        break;
+                    case 14:
+                        newNPC.Race = EntityRace.B_Orc;
+                        break;
+                    case 15:
+                        newNPC.Race = EntityRace.C_Tiefling;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Press enter to continue.");
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        {
+                            goto RaceSelect;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            goto default;
+                        }
+                }
+            }
+            else
+            {
+                PressEnterScript();
+                goto RaceSelect;
+            }
+        }
+
+        private void ChooseClass_NPC()
+        {
+            var npcClasses = npcInfo.GetAllClasses();
+
+        ClassSelect:
+            Console.Clear();
+            Console.WriteLine("Choose a class:\n");
+            int classCount = 0;
+            foreach(string className in npcClasses)
+            {
+                classCount++;
+                Console.WriteLine($"{classCount}. {className.Remove(0, 2)}");
+            }
+
+            string input = Console.ReadLine();
+            bool parsed = int.TryParse(input, out int whichClass);
+            if (parsed)
+            {
+                switch (whichClass)
+                {
+                    case 1:
+                        newNPC.EntityClass = EntityClass.B_Barbarian;
+                        break;
+                    case 2:
+                        newNPC.EntityClass = EntityClass.C_Bard;
+                        break;
+                    case 3:
+                        newNPC.EntityClass = EntityClass.C_Cleric;
+                        break;
+                    case 4:
+                        newNPC.EntityClass = EntityClass.C_Druid;
+                        break;
+                    case 5:
+                        newNPC.EntityClass = EntityClass.B_Fighter;
+                        break;
+                    case 6:
+                        newNPC.EntityClass = EntityClass.C_Monk;
+                        break;
+                    case 7:
+                        newNPC.EntityClass = EntityClass.C_Paladin;
+                        break;
+                    case 8:
+                        newNPC.EntityClass = EntityClass.B_Ranger;
+                        break;
+                    case 9:
+                        newNPC.EntityClass = EntityClass.B_Rogue;
+                        break;
+                    case 10:
+                        newNPC.EntityClass = EntityClass.B_Wizard;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Press enter to continue.");
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        {
+                            goto ClassSelect;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            goto default;
+                        }
+                }
+            }
+            else
+            {
+                PressEnterScript();
+                goto ClassSelect;
+            }
+        }
+
+        private void ChooseAlignment_NPC()
+        {
+            var alignments = npcInfo.FindAlignment_CharacterAndNPC();
+
+        AlignmentSelect:
+            Console.WriteLine("Choose an alignment:\n");
+            int alignmentCount = 0;
+            foreach (string alignmentName in alignments)
+            {
+                alignmentCount++;
+                Console.WriteLine($"{alignmentCount}. {alignmentName.Remove(0, 2)}");
+            }
+
+            string input = Console.ReadLine();
+            bool parsed = int.TryParse(input, out int whichAlignment);
+            if (parsed)
+            {
+                switch (whichAlignment)
+                {
+                    case 1:
+                        newNPC.Alignment = EntityAlignment.C_Lawful_Good;
+                        break;
+                    case 2:
+                        newNPC.Alignment = EntityAlignment.C_Neutral_Good;
+                        break;
+                    case 3:
+                        newNPC.Alignment = EntityAlignment.C_Chaotic_Good;
+                        break;
+                    case 4:
+                        newNPC.Alignment = EntityAlignment.C_Lawful_Neutral;
+                        break;
+                    case 5:
+                        newNPC.Alignment = EntityAlignment.B_True_Neutral;
+                        break;
+                    case 6:
+                        newNPC.Alignment = EntityAlignment.B_Chaotic_Neutral;
+                        break;
+                    case 7:
+                        newNPC.Alignment = EntityAlignment.B_Lawful_Evil;
+                        break;
+                    case 8:
+                        newNPC.Alignment = EntityAlignment.B_Neutral_Evil;
+                        break;
+                    case 9:
+                        newNPC.Alignment = EntityAlignment.B_Chaotic_Evil;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Press enter to continue.");
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        {
+                            goto AlignmentSelect;
+                        }
+                        else
+                        {
+                            PressEnterScript();
+                            goto AlignmentSelect;
+                        }
+                }
+            }
+            else
+            {
+                PressEnterScript();
+                goto AlignmentSelect;
+            }
+        }
+
+        private string EnterDetails_NPC()
+        {
+            Console.Clear();
+            // Name
+            Console.WriteLine("What is the character's name?");
+            newNPC.Name = Console.ReadLine();
+
+        // Height
+        SetHeight:
+            Console.Clear();
+            Console.WriteLine($"How tall is {newNPC.Name} (in inches)?");
+            string height = Console.ReadLine();
+            bool parseHeight = int.TryParse(height, out int howTall);
+            if (parseHeight && howTall >= 24 && howTall <= 120)
+            {
+                newNPC.Height = howTall;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. NPCs should be between 24 and 120 inches tall. Press enter to continue.");
+                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                {
+                    goto SetHeight;
+                }
+                else
+                {
+                    PressEnterScript();
+                    goto SetHeight;
+                }
+            }
+
+        // Weight
+        SetWeight:
+            Console.Clear();
+            Console.WriteLine($"How much does {newNPC.Name} weight (in pounds)?");
+            string weight = Console.ReadLine();
+            bool parseWeight = int.TryParse(weight, out int howHeavy);
+            if (parseWeight && howHeavy >= 25 && howHeavy <= 600)
+            {
+                newNPC.Weight = howHeavy;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. NPCs should weigh between 25 and 600 pounds. Press enter to continue.");
+                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                {
+                    goto SetWeight;
+                }
+                else
+                {
+                    PressEnterScript();
+                    goto SetWeight;
+                }
+            }
+
+        // Strength
+        SetStrength:
+            var rndStrength = new Random();
+            Console.Clear();
+            Console.WriteLine($"What is {newNPC.Name}'s base strength?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string strength = Console.ReadLine().ToLower();
+            bool parseStrength = int.TryParse(strength, out int howStrong);
+            if (parseStrength && howStrong >= 10 && howStrong <= 20)
+            {
+                newNPC.Strength = howStrong;
+            }
+            else if (strength == "r")
+            {
+                newNPC.Strength = rndStrength.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetStrength;
+            }
+
+        // Dexterity
+        SetDexterity:
+            var rndDexterity = new Random();
+            Console.Clear();
+            Console.WriteLine($"What is {newNPC.Name}'s base dexterity?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string dexterity = Console.ReadLine().ToLower();
+            bool parseDexterity = int.TryParse(dexterity, out int howDexterous);
+            if (parseDexterity && howDexterous >= 10 && howDexterous <= 20)
+            {
+                newNPC.Dexterity = howDexterous;
+            }
+            else if (dexterity == "r")
+            {
+                newNPC.Dexterity = rndDexterity.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetDexterity;
+            }
+
+        // Constitution
+        SetConstitution:
+            var rndConstitution = new Random();
+            Console.Clear();
+            Console.WriteLine($"What is {newNPC.Name}'s base constitution?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string constitution = Console.ReadLine().ToLower();
+            bool parseConstitution = int.TryParse(constitution, out int howConstituted);
+            if (parseConstitution && howConstituted >= 10 && howConstituted <= 20)
+            {
+                newNPC.Constitution = howConstituted;
+            }
+            else if (constitution == "r")
+            {
+                newNPC.Constitution = rndConstitution.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetConstitution;
+            }
+
+        // Intelligence
+        SetIntelligence:
+            var rndIntelligence = new Random();
+            Console.Clear();
+            Console.WriteLine($"What is {newNPC.Name}'s base intelligence?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string intelligence = Console.ReadLine().ToLower();
+            bool parseIntelligence = int.TryParse(intelligence, out int howIntelligent);
+            if (parseIntelligence && howIntelligent >= 10 && howIntelligent <= 20)
+            {
+                newNPC.Intelligence = howIntelligent;
+            }
+            else if (intelligence == "r")
+            {
+                newNPC.Intelligence = rndIntelligence.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetIntelligence;
+            }
+
+        // Wisdom
+        SetWisdom:
+            var rndWisdom = new Random();
+            Console.Clear();
+            Console.WriteLine($"What is {newNPC.Name}'s base wisdom?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string wisdom = Console.ReadLine().ToLower();
+            bool parseWisdom = int.TryParse(wisdom, out int howWise);
+            if (parseWisdom && howWise >= 10 && howWise <= 20)
+            {
+                newNPC.Wisdom = howWise;
+            }
+            else if (wisdom == "r")
+            {
+                newNPC.Wisdom = rndWisdom.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetWisdom;
+            }
+
+        // Perception
+        SetPerception:
+            var rndPerception = new Random();
+            Console.Clear();
+            Console.WriteLine($"What is {newNPC.Name}'s base perception?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string perception = Console.ReadLine().ToLower();
+            bool parsePerception = int.TryParse(perception, out int howPerceptive);
+            if (parsePerception && howPerceptive >= 10 && howPerceptive <= 20)
+            {
+                newNPC.Perception = howPerceptive;
+            }
+            else if (perception == "r")
+            {
+                newNPC.Perception = rndPerception.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetPerception;
+            }
+
+        // Armor
+        SetArmor:
+            var rndArmor = new Random();
+            Console.Clear();
+            Console.WriteLine($"What is {newNPC.Name}'s base armor?\n" +
+                $"Enter a number from 10 - 20 or press R to roll a d20.");
+            string armor = Console.ReadLine().ToLower();
+            bool parseArmor = int.TryParse(armor, out int howArmored);
+            if (parseArmor && howArmored >= 10 && howArmored <= 20)
+            {
+                newNPC.Armor = howArmored;
+            }
+            else if (armor == "r")
+            {
+                newNPC.Armor = rndArmor.Next(10, 20);
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetArmor;
+            }
+
+        // Health
+        SetHealth:
+            var rndHealth = new Random();
+            Console.Clear();
+            Console.WriteLine($"What is {newNPC.Name}'s base health?\n" +
+                $"Enter a number from 10 - 32 or press R to roll 4d8.");
+            string health = Console.ReadLine().ToLower();
+            bool parseHealth = int.TryParse(health, out int howHealthy);
+            if (parseHealth && howHealthy >= 10 && howHealthy <= 32)
+            {
+                newNPC.Health = howHealthy;
+            }
+            else if (health == "r")
+            {
+                int healthSum = 0;
+                for (int dieRolls = 1; dieRolls <= 4; dieRolls++)
+                {
+                    healthSum += rndHealth.Next(3, 8);
+                }
+
+                newNPC.Health = healthSum;
+            }
+            else
+            {
+                PressEnterScript();
+                goto SetHealth;
+            }
+
+            Console.Clear();
+            string npcDetails = $"Your character's name is {newNPC.Name}.\n" +
+                $"{newNPC.Name} is a {newNPC.Alignment.ToString().Replace('_', ' ').Remove(0,2)} {newNPC.EntityClass.ToString().Remove(0,2)} {newNPC.Race.ToString().Remove(0,2)}.\n" +
+               $"{newNPC.Name} is {newNPC.Height} inches tall and weighs {newNPC.Weight} pounds.\n" +
+               $"{newNPC.Name}'s stats are as follows:\n" +
+               $"Strength: {newNPC.Strength}\n" +
+               $"Dexterity: {newNPC.Dexterity}\n" +
+               $"Constitution: {newNPC.Constitution}\n" +
+               $"Intelligence: {newNPC.Intelligence}\n" +
+               $"Wisdom: {newNPC.Wisdom}\n" +
+               $"Perception: {newNPC.Perception}\n" +
+               $"Armor: {newNPC.Armor}\n" +
+               $"Health: {newNPC.Health}";
+            return npcDetails;
         }
     }
 }

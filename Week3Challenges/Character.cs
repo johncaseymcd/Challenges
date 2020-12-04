@@ -136,7 +136,7 @@ namespace Week3Challenges
             return characterClasses;
         }
 
-        public List<string> FindAlignment_Character()
+        public List<string> FindAlignment_CharacterAndNPC()
         {
             List<string> characterAlignments = new List<string>();
 
@@ -350,9 +350,31 @@ namespace Week3Challenges
 
     // ------------------------------------------------------------------------
 
-    public class NonPlayerCRUD : EntityCRUD
+    public class NonPlayerCRUD : CharacterCRUD
     {
         private List<Entity> _npcList = new List<Entity>();
+
+        public List<string> GetAllRaces()
+        {
+            var allRaces = new List<string>();
+            foreach(string race in Enum.GetNames(typeof(EntityRace)))
+            {
+                allRaces.Add(race);
+            }
+
+            return allRaces;
+        }
+
+        public List<string> GetAllClasses()
+        {
+            var allClasses = new List<string>();
+            foreach(string className in Enum.GetNames(typeof(EntityClass)))
+            {
+                allClasses.Add(className);
+            }
+
+            return allClasses;
+        }
 
         public override void Create(Entity npc)
         {
