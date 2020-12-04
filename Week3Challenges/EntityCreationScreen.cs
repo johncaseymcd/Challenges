@@ -28,6 +28,7 @@ namespace Week3Challenges
 
         public void Run()
         {
+            Console.Clear();
             Menu();
         }
 
@@ -44,6 +45,7 @@ namespace Week3Challenges
             bool parseMainMenu = int.TryParse(mainMenuChoice, out int whatToDo);
             if (parseMainMenu)
             {
+                Console.Clear();
                 switch (whatToDo)
                 {
                     case 1:
@@ -53,7 +55,7 @@ namespace Week3Challenges
                     case 3:
                         goto EditCharacter;
                     case 4:
-                        goto DeleteCharacter;
+                        break;
                     case 5:
                         Console.WriteLine("Goodbye!");
                         Console.ReadLine();
@@ -92,12 +94,8 @@ namespace Week3Challenges
                     case 1:
                     // Code for Character creation
                     CreateCharacter:
-                        ChooseRace_Character();
-                        ChooseClass_Character();
-                        ChooseAlignment_Character();
                         Console.Clear();
-                        string displayCharacterDetails = EnterDetails_Character();
-                        Console.WriteLine(displayCharacterDetails);
+                        EnterDetails_Character();
                         Console.WriteLine("Would you like to edit your character (y/n)?");
                         string toChange = Console.ReadLine().ToLower();
                         if (toChange == "y")
@@ -115,12 +113,8 @@ namespace Week3Challenges
                     case 2:
                     // Code for Monster creation
                     CreateMonster:
-                        ChooseRace_Monster();
-                        ChooseClass_Monster();
-                        ChooseAlignment_Monster();
                         Console.Clear();
-                        string displayMonsterDetails = EnterDetails_Monster();
-                        Console.WriteLine(displayMonsterDetails);
+                        EnterDetails_Monster();
                         Console.WriteLine("Would you like to edit your character (y/n)?");
                         string toChangeMonster = Console.ReadLine().ToLower();
                         if (toChangeMonster == "y")
@@ -268,6 +262,10 @@ namespace Week3Challenges
                 PressEnterScript();
                 goto ViewCharacters;
             }
+
+        EditCharacter:
+            Console.ReadLine();
+
         }
 
         private void PressEnterScript()
@@ -281,8 +279,9 @@ namespace Week3Challenges
             }
         }
 
-        private void ChooseRace_Character()
+        private Entity EnterDetails_Character()
         {
+            // Choose Race
             List<string> characterRaces = characterInfo.FindRace_Character();
 
         RaceSelect:
@@ -296,10 +295,10 @@ namespace Week3Challenges
                 Console.WriteLine($"{raceCount}. {raceName.Remove(0, 2)}");
             }
 
-            string input = Console.ReadLine();
-            bool parsed = int.TryParse(input, out int whichRace);
+            string inputRace = Console.ReadLine();
+            bool parseRace = int.TryParse(inputRace, out int whichRace);
 
-            if (parsed)
+            if (parseRace)
             {
                 switch (whichRace)
                 {
@@ -342,10 +341,8 @@ namespace Week3Challenges
                 PressEnterScript();
                 goto RaceSelect;
             }
-        }
 
-        private void ChooseClass_Character()
-        {
+            // Choose class
             List<string> characterClasses = characterInfo.FindClass_Character();
 
         ClassSelect:
@@ -359,9 +356,9 @@ namespace Week3Challenges
                 Console.WriteLine($"{classCount}. {className.Remove(0, 2)}");
             }
 
-            string input = Console.ReadLine();
-            bool parsed = int.TryParse(input, out int whichClass);
-            if (parsed)
+            string inputClass = Console.ReadLine();
+            bool parseClass = int.TryParse(inputClass, out int whichClass);
+            if (parseClass)
             {
                 switch (whichClass)
                 {
@@ -413,10 +410,8 @@ namespace Week3Challenges
                 PressEnterScript();
                 goto ClassSelect;
             }
-        }
 
-        private void ChooseAlignment_Character()
-        {
+            // Choose alignment
             List<string> characterAlignments = characterInfo.FindAlignment_CharacterAndNPC();
 
         AlignmentSelect:
@@ -433,10 +428,10 @@ namespace Week3Challenges
             }
 
 
-            string input = Console.ReadLine();
-            bool parsed = int.TryParse(input, out int whichAlignment);
+            string inputAlignment = Console.ReadLine();
+            bool parseAlignment = int.TryParse(inputAlignment, out int whichAlignment);
 
-            if (parsed)
+            if (parseAlignment)
             {
                 switch (whichAlignment)
                 {
@@ -485,11 +480,10 @@ namespace Week3Challenges
                 PressEnterScript();
                 goto AlignmentSelect;
             }
-        }
 
-        private string EnterDetails_Character()
-        {
         // Name
+        SetName:
+            Console.Clear();
             Console.WriteLine("What is the character's name?\n");
             newCharacter.Name = Console.ReadLine();
 
@@ -725,7 +719,7 @@ namespace Week3Challenges
             }
 
             Console.Clear();
-            string characterDetails = $"Your character's name is {newCharacter.Name}.\n" +
+            Console.WriteLine($"Your character's name is {newCharacter.Name}.\n" +
                 $"{newCharacter.Name} is a {newCharacter.Alignment.ToString().Replace('_', ' ').Remove(0,2)} {newCharacter.EntityClass.ToString().Remove(0,2)} {newCharacter.Race.ToString().Remove(0,2)}.\n" +
                 $"{newCharacter.Name} is {newCharacter.Height} inches tall and weighs {newCharacter.Weight} pounds.\n" +
                 $"{newCharacter.Name}'s stats are as follows:\n" +
@@ -736,12 +730,13 @@ namespace Week3Challenges
                 $"Wisdom: {newCharacter.Wisdom}\n" +
                 $"Perception: {newCharacter.Perception}\n" +
                 $"Armor: {newCharacter.Armor}\n" +
-                $"Health: {newCharacter.Health}";
-            return characterDetails;
+                $"Health: {newCharacter.Health}");
+            return newCharacter;
         }
 
-        private void ChooseRace_Monster()
+        private Entity EnterDetails_Monster()
         {
+            // Choose race
             List<string> monsterRaces = monsterInfo.FindRace_Monster();
 
         RaceSelect:
@@ -755,10 +750,10 @@ namespace Week3Challenges
                 Console.WriteLine($"{raceCount}. {raceName.Remove(0, 2)}");
             }
 
-            string input = Console.ReadLine();
-            bool parsed = int.TryParse(input, out int whichRace);
+            string inputRace = Console.ReadLine();
+            bool parseRace = int.TryParse(inputRace, out int whichRace);
 
-            if (parsed)
+            if (parseRace)
             {
                 switch (whichRace)
                 {
@@ -807,10 +802,8 @@ namespace Week3Challenges
                 PressEnterScript();
                 goto RaceSelect;
             }
-        }
 
-        private void ChooseClass_Monster()
-        {
+            // Choose class
             List<string> monsterClasses = monsterInfo.FindClass_Monster();
 
         ClassSelect:
@@ -824,10 +817,10 @@ namespace Week3Challenges
                 Console.WriteLine($"{classCount}. {className.Remove(0, 2)}");
             }
 
-            string input = Console.ReadLine();
-            bool parsed = int.TryParse(input, out int whichClass);
+            string inputClass = Console.ReadLine();
+            bool parseClass = int.TryParse(inputClass, out int whichClass);
 
-            if (parsed)
+            if (parseClass)
             {
                 switch (whichClass)
                 {
@@ -864,10 +857,8 @@ namespace Week3Challenges
                 PressEnterScript();
                 goto ClassSelect;
             }
-        }
 
-        private void ChooseAlignment_Monster()
-        {
+            // Choose alignment
             List<string> monsterAlignments = monsterInfo.FindAlignment_Monster();
 
         AlignmentSelect:
@@ -875,17 +866,17 @@ namespace Week3Challenges
 
             Console.WriteLine("Choose the monster's alignment:\n");
             int alignmentCount = 0;
-            foreach(string alignmentName in monsterAlignments)
+            foreach (string alignmentName in monsterAlignments)
             {
                 alignmentCount++;
                 string alignment = alignmentName.Replace('_', ' ');
                 Console.WriteLine($"{alignmentCount}. {alignment.Remove(0, 2)}");
             }
 
-            string input = Console.ReadLine();
-            bool parsed = int.TryParse(input, out int whichAlignment);
+            string inputAlignment = Console.ReadLine();
+            bool parseAlignment = int.TryParse(inputAlignment, out int whichAlignment);
 
-            if (parsed)
+            if (parseAlignment)
             {
                 switch (whichAlignment)
                 {
@@ -922,11 +913,10 @@ namespace Week3Challenges
                 PressEnterScript();
                 goto AlignmentSelect;
             }
-        }
 
-        private string EnterDetails_Monster()
-        {
         // Name
+        SetName:
+            Console.Clear();
             Console.WriteLine("What is the monster's name?");
             newMonster.Name = Console.ReadLine();
 
@@ -1160,7 +1150,7 @@ namespace Week3Challenges
             }
 
             Console.Clear();
-            string monsterDetails = $"Your character's name is {newMonster.Name}.\n" +
+            Console.WriteLine($"Your character's name is {newMonster.Name}.\n" +
                 $"{newMonster.Name} is a {newMonster.Alignment.ToString().Replace('_', ' ').Remove(0,2)} {newMonster.EntityClass.ToString().Remove(0,2)} {newMonster.Race.ToString().Remove(0,2)}.\n" +
                 $"{newMonster.Name} is {newMonster.Height} inches tall and weighs {newMonster.Weight} pounds.\n" +
                 $"{newMonster.Name}'s stats are as follows:\n" +
@@ -1171,8 +1161,8 @@ namespace Week3Challenges
                 $"Wisdom: {newMonster.Wisdom}\n" +
                 $"Perception: {newMonster.Perception}\n" +
                 $"Armor: {newMonster.Armor}\n" +
-                $"Health: {newMonster.Health}";
-            return monsterDetails;
+                $"Health: {newMonster.Health}");
+            return newMonster;
         }
 
         private void ChooseRace_NPC()
