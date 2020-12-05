@@ -28,7 +28,9 @@ namespace Week3Challenges
 
         public void Run()
         {
-            SeedEntityList();
+            SeedCharacterList();
+            SeedMonsterList();
+            SeedNPCList();
             Menu();
         }
 
@@ -1760,37 +1762,55 @@ namespace Week3Challenges
             return newNPC;
         }
 
-        private void SeedEntityList()
+        public void SeedCharacterList()
         {
+            var characterAdd = new CharacterCRUD();
+
             var player1 = new Entity(EntityRace.C_Halfling, EntityClass.B_Rogue, EntityAlignment.B_Chaotic_Neutral, "Hanenbow Burrows", 35, 65, 11, 14, 12, 14, 13, 16, 18, 22);
             var player2 = new Entity(EntityRace.C_Human, EntityClass.C_Monk, EntityAlignment.B_Lawful_Evil, "Antonin Luna", 77, 277, 12, 13, 13, 13, 15, 17, 13, 22);
             var player3 = new Entity(EntityRace.C_Dwarf, EntityClass.C_Paladin, EntityAlignment.C_Lawful_Good, "Fari Godhand", 54, 175, 13, 10, 11, 13, 14, 16, 16, 31);
             var player4 = new Entity(EntityRace.C_Elf, EntityClass.C_Druid, EntityAlignment.B_True_Neutral, "Iliana Petrichor", 72, 186, 10, 15, 10, 14, 12, 15, 13, 13);
 
-            _characterList.Add(player1);
-            _characterList.Add(player2);
-            _characterList.Add(player3);
-            _characterList.Add(player4);
+            characterAdd.Create(player1);
+            characterAdd.Create(player2);
+            characterAdd.Create(player3);
+            characterAdd.Create(player4);
+
+            _characterList = characterAdd.List();
+        }
+
+        public void SeedMonsterList()
+        {
+            var monsterAdd = new MonsterCRUD();
 
             var monster1 = new Entity(EntityRace.M_Goblin, EntityClass.B_Fighter, EntityAlignment.B_Neutral_Evil, "Standard Goblin", 40, 55, 12, 10, 13, 10, 10, 11, 15, 15);
             var monster2 = new Entity(EntityRace.B_Orc, EntityClass.B_Rogue, EntityAlignment.B_Chaotic_Evil, "Standard Orc", 75, 250, 15, 13, 14, 11, 11, 13, 16, 25);
             var monster3 = new Entity(EntityRace.M_Kenku, EntityClass.B_Wizard, EntityAlignment.B_Lawful_Evil, "Standard Kenku", 63, 100, 12, 15, 12, 16, 13, 16, 11, 20);
             var monster4 = new Entity(EntityRace.M_Lizardfolk, EntityClass.B_Ranger, EntityAlignment.B_Neutral_Evil, "Standard Lizardfolk", 76, 225, 15, 13, 17, 12, 11, 13, 18, 25);
 
-            _monsterList.Add(monster1);
-            _monsterList.Add(monster2);
-            _monsterList.Add(monster3);
-            _monsterList.Add(monster4);
+            monsterAdd.Create(monster1);
+            monsterAdd.Create(monster2);
+            monsterAdd.Create(monster3);
+            monsterAdd.Create(monster4);
+
+            _monsterList = monsterAdd.List();
+        }
+            
+        public void SeedNPCList()
+        {
+            var npcAdd = new NonPlayerCRUD();
 
             var npc1 = new Entity(EntityRace.C_Human, EntityClass.B_Fighter, EntityAlignment.C_Lawful_Neutral, "Shopkeeper", 69, 169, 13, 13, 13, 13, 13, 13, 13, 20);
             var npc2 = new Entity(EntityRace.B_Orc, EntityClass.B_Fighter, EntityAlignment.B_True_Neutral, "Bartender", 77, 264, 16, 14, 16, 12, 11, 16, 19, 30);
             var npc3 = new Entity(EntityRace.M_Hobgoblin, EntityClass.B_Barbarian, EntityAlignment.B_Chaotic_Neutral, "Mercenary", 64, 181, 15, 17, 16, 13, 11, 14, 17, 30);
             var npc4 = new Entity(EntityRace.M_Centaur, EntityClass.C_Cleric, EntityAlignment.C_Lawful_Good, "Healer", 81, 555, 18, 10, 18, 19, 20, 20, 17, 32);
 
-            _npcList.Add(npc1);
-            _npcList.Add(npc2);
-            _npcList.Add(npc3);
-            _npcList.Add(npc4);
+            npcAdd.Create(npc1);
+            npcAdd.Create(npc2);
+            npcAdd.Create(npc3);
+            npcAdd.Create(npc4);
+
+            _npcList = npcAdd.List();
         }
     }
 }
