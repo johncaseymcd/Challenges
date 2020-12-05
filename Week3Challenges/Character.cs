@@ -164,7 +164,7 @@ namespace Week3Challenges
         {
             Entity oldCharacter = GetName(name);
 
-            if (name != null)
+            if (oldCharacter != null)
             {
                 oldCharacter.Race = newCharacter.Race;
                 oldCharacter.EntityClass = newCharacter.EntityClass;
@@ -193,7 +193,7 @@ namespace Week3Challenges
         {
             Entity character = GetName(name);
 
-            if (name == null)
+            if (character == null)
             {
                 return false;
             }
@@ -201,7 +201,7 @@ namespace Week3Challenges
             int characterCount = _characterList.Count;
             _characterList.Remove(character);
 
-            if (characterCount < _characterList.Count)
+            if (characterCount > _characterList.Count)
             {
                 return true;
             }
@@ -214,9 +214,9 @@ namespace Week3Challenges
         // Helper method
         public override Entity GetName(string name)
         {
-            foreach (var character in _characterList)
+            foreach (var character in List())
             {
-                if (character.Name.ToLower() == name.ToLower())
+                if (name.ToLower() == character.Name.ToLower())
                 {
                     return character;
                 }
@@ -250,7 +250,7 @@ namespace Week3Challenges
         {
             List<string> monsterClasses = new List<string>();
 
-            foreach (string className in Enum.GetValues(typeof(EntityClass)))
+            foreach (string className in Enum.GetNames(typeof(EntityClass)))
             {
                 if (className.StartsWith("M") || className.StartsWith("B"))
                 {
@@ -264,7 +264,7 @@ namespace Week3Challenges
         {
             List<string> monsterAlignments = new List<string>();
 
-            foreach(string alignmentName in Enum.GetValues(typeof(EntityAlignment)))
+            foreach(string alignmentName in Enum.GetNames(typeof(EntityAlignment)))
             {
                 if (alignmentName.StartsWith("M") || alignmentName.StartsWith("B"))
                 {
@@ -316,7 +316,7 @@ namespace Week3Challenges
         {
             Entity monster = GetName(name);
 
-            if (name == null)
+            if (monster == null)
             {
                 return false;
             }
@@ -324,7 +324,7 @@ namespace Week3Challenges
             int monsterCount = _monsterList.Count;
             _monsterList.Remove(monster);
 
-            if (monsterCount < _monsterList.Count)
+            if (monsterCount > _monsterList.Count)
             {
                 return true;
             }
@@ -336,9 +336,9 @@ namespace Week3Challenges
 
         public override Entity GetName(string name)
         {
-            foreach (Entity monster in _monsterList)
+            foreach (Entity monster in List())
             {
-                if (monster.Name.ToLower() == name.ToLower())
+                if (name.ToLower() == monster.Name.ToLower())
                 {
                     return monster;
                 }
@@ -418,7 +418,7 @@ namespace Week3Challenges
         {
             Entity npc = GetName(name);
 
-            if (name == null)
+            if (npc == null)
             {
                 return false;
             }
@@ -426,7 +426,7 @@ namespace Week3Challenges
             int npcCount = _npcList.Count;
             _npcList.Remove(npc);
 
-            if (npcCount < _npcList.Count)
+            if (npcCount > _npcList.Count)
             {
                 return true;
             }
@@ -438,9 +438,9 @@ namespace Week3Challenges
 
         public override Entity GetName(string name)
         {
-            foreach (Entity npc in _npcList)
+            foreach (Entity npc in List())
             {
-                if (npc.Name.ToLower() == name.ToLower())
+                if (name.ToLower() == npc.Name.ToLower())
                 {
                     return npc;
                 }

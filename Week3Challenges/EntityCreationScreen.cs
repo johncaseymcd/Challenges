@@ -11,17 +11,17 @@ namespace Week3Challenges
         // New Player Character variables
         Entity newCharacter = new Entity();
         CharacterCRUD characterInfo = new CharacterCRUD();
-        List<Entity> _characterList = new List<Entity>();
+        List<Entity> allCharacters = new List<Entity>();
 
         // New Monster variables
         Entity newMonster = new Entity();
         MonsterCRUD monsterInfo = new MonsterCRUD();
-        List<Entity> _monsterList = new List<Entity>();
+        List<Entity> allMonsters = new List<Entity>();
 
         // New NPC variables
         Entity newNPC = new Entity();
         NonPlayerCRUD npcInfo = new NonPlayerCRUD();
-        List<Entity> _npcList = new List<Entity>();
+        List<Entity> allNPCS = new List<Entity>();
 
         // List of all characters
         List<Entity> _allEntities = new List<Entity>();
@@ -29,14 +29,22 @@ namespace Week3Challenges
         public void Run()
         {
             SeedCharacterList();
+            allCharacters = characterInfo.List();
+
             SeedMonsterList();
+            allMonsters = monsterInfo.List();
+
             SeedNPCList();
+            allNPCS = npcInfo.List();
+
             Menu();
         }
 
         private void Menu()
         {
         MainMenu:
+            Console.Title = "Main Menu";
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
             Console.WriteLine("What would you like to do?\n" +
                 "1. Create a character\n" +
@@ -61,8 +69,7 @@ namespace Week3Challenges
                         goto EntityDelete;
                     case 5:
                         Console.WriteLine("Goodbye!");
-                        Console.ReadLine();
-                        break;
+                        goto End;
                     default:
                         Console.WriteLine("Invalid input. Press enter to continue.");
                         if (Console.ReadKey().Key == ConsoleKey.Enter)
@@ -84,10 +91,13 @@ namespace Week3Challenges
 
         EntityCreate:
             Console.Clear();
+            Console.Title = "Creation Menu";
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("What kind of character are you creating?\n" +
                 "1. Player Character\n" +
                 "2. Monster\n" +
-                "3. Non-Player Character");
+                "3. Non-Player Character\n" +
+                "4. Exit");
             string createChoice = Console.ReadLine();
             bool parseCreateChoice = int.TryParse(createChoice, out int whichCharacter);
             if (parseCreateChoice)
@@ -98,6 +108,7 @@ namespace Week3Challenges
                     // Code for Character creation
                     CreateCharacter:
                         Console.Clear();
+                        Console.Title = "Create a New Player Character";
                         EnterDetails_Character();
                         Console.WriteLine("Would you like to edit your character (y/n)?");
                         string toChange = Console.ReadLine().ToLower();
@@ -107,7 +118,8 @@ namespace Week3Challenges
                         }
                         else
                         {
-                            _characterList.Add(newCharacter);
+                            // characterInfo.Create(newCharacter);
+                            allCharacters.Add(newCharacter);
                             Console.WriteLine("Character successfully created!");
                             Console.ReadLine();
                             goto MainMenu;
@@ -116,6 +128,7 @@ namespace Week3Challenges
                     // Code for Monster creation
                     CreateMonster:
                         Console.Clear();
+                        Console.Title = "Create a New Monster Character";
                         EnterDetails_Monster();
                         Console.WriteLine("Would you like to edit your character (y/n)?");
                         string toChangeMonster = Console.ReadLine().ToLower();
@@ -125,7 +138,8 @@ namespace Week3Challenges
                         }
                         else
                         {
-                            _monsterList.Add(newMonster);
+                            // monsterInfo.Create(newMonster);
+                            allMonsters.Add(newMonster);
                             Console.WriteLine("Monster successfully created!");
                             Console.ReadLine();
                             goto MainMenu;
@@ -134,6 +148,7 @@ namespace Week3Challenges
                     // Code for NPC creation
                     CreateNPC:
                         Console.Clear();
+                        Console.Title = "Create a New NPC Character";
                         EnterDetails_NPC();
                         Console.WriteLine("Would you like to edit this character (y/n)?");
                         string toChangeNPC = Console.ReadLine().ToLower();
@@ -143,12 +158,16 @@ namespace Week3Challenges
                         }
                         else
                         {
-                            _npcList.Add(newNPC);
+                            // npcInfo.Create(newNPC);
+                            allNPCS.Add(newNPC);
                             Console.WriteLine("NPC successfully created!");
                             Console.ReadLine();
                             goto MainMenu;
                         }
+                    case 4:
+                        goto MainMenu;
                     default:
+                        Console.Title = "Error";
                         Console.WriteLine("Invalid input. Press enter to continue.");
                         if (Console.ReadKey().Key == ConsoleKey.Enter)
                         {
@@ -169,6 +188,8 @@ namespace Week3Challenges
 
         EntityView:
             Console.Clear();
+            Console.Title = "Character View Menu";
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("What kind of characters would you like to view?\n" +
                 "1. Player characters\n" +
                 "2. Monsters\n" +
@@ -183,8 +204,9 @@ namespace Week3Challenges
                 switch (whatToView)
                 {
                     case 1:
+                        Console.Title = "View all Player Characters";
                         int characterCount = 0;
-                        foreach(var character in _characterList)
+                        foreach(var character in allCharacters)
                         {
                             characterCount++;
                             Console.WriteLine($"{characterCount}. {character.Name}: {character.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {character.EntityClass.ToString().Remove(0, 2)} {character.Race.ToString().Remove(0, 2)}\n");
@@ -192,8 +214,9 @@ namespace Week3Challenges
                         Console.ReadLine();
                         goto MainMenu;
                     case 2:
+                        Console.Title = "View all Monster Characters";
                         int monsterCount = 0;
-                        foreach(var monster in _monsterList)
+                        foreach(var monster in allMonsters)
                         {
                             monsterCount++;
                             Console.WriteLine($"{monsterCount}. {monster.Name}: {monster.Alignment.ToString().Replace('_', ' ').Remove(0,2)} {monster.EntityClass.ToString().Remove(0, 2)} {monster.Race.ToString().Remove(0,2)}\n");
@@ -201,31 +224,33 @@ namespace Week3Challenges
                         Console.ReadLine();
                         goto MainMenu;
                     case 3:
+                        Console.Title = "View all NPC Characters";
                         int npcCount = 0;
-                        foreach(var npc in _npcList)
+                        foreach(var npc in allNPCS)
                         {
                             npcCount++;
-                            Console.WriteLine($"{npcCount}. {npc.Name}: {npc.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {npc.EntityClass.ToString().Remove(0, 2)} {npc.Race.ToString().Remove(0, 2)}");
+                            Console.WriteLine($"{npcCount}. {npc.Name}: {npc.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {npc.EntityClass.ToString().Remove(0, 2)} {npc.Race.ToString().Remove(0, 2)}\n");
                         }
                         Console.ReadLine();
                         goto MainMenu;
                     case 4:
+                        Console.Title = "View all Characters";
                         AggregateEntityLists();
                         int entityCount = 0;
                         foreach(var entity in _allEntities)
                         {
                             entityCount++;
-                            if (entityCount <= _characterList.Count)
+                            if (entityCount <= allCharacters.Count)
                             {
-                                Console.WriteLine($"{entityCount}. {entity.Name} is a player character who is a {entity.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {entity.EntityClass.ToString().Remove(0, 2)} {entity.Race.ToString().Remove(0, 2)}");
+                                Console.WriteLine($"{entityCount}. {entity.Name} is a Player Character who is a {entity.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {entity.EntityClass.ToString().Remove(0, 2)} {entity.Race.ToString().Remove(0, 2)}\n");
                             }
-                            else if(entityCount > _characterList.Count && entityCount <= (_characterList.Count + _monsterList.Count))
+                            else if(entityCount > allCharacters.Count && entityCount <= (allCharacters.Count + allMonsters.Count))
                             {
-                                Console.WriteLine($"{entityCount}. {entity.Name} is a monster who is a {entity.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {entity.EntityClass.ToString().Remove(0, 2)} {entity.Race.ToString().Remove(0, 2)}");
+                                Console.WriteLine($"{entityCount}. {entity.Name} is a Monster who is a {entity.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {entity.EntityClass.ToString().Remove(0, 2)} {entity.Race.ToString().Remove(0, 2)}\n");
                             }
-                            else if (entityCount > _characterList.Count + _monsterList.Count)
+                            else if (entityCount > allCharacters.Count + allMonsters.Count)
                             {
-                                Console.WriteLine($"{entityCount}. {entity.Name} is an NPC who is a {entity.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {entity.EntityClass.ToString().Remove(0, 2)} {entity.Race.ToString().Remove(0, 2)}");
+                                Console.WriteLine($"{entityCount}. {entity.Name} is an NPC who is a {entity.Alignment.ToString().Replace('_', ' ').Remove(0, 2)} {entity.EntityClass.ToString().Remove(0, 2)} {entity.Race.ToString().Remove(0, 2)}\n");
                             }
                         }
                         Console.ReadLine();
@@ -233,6 +258,7 @@ namespace Week3Challenges
                     case 5:
                         goto MainMenu;
                     default:
+                        Console.Title = "Error";
                         Console.WriteLine("Invalid input. Press enter to continue.");
                         if (Console.ReadKey().Key == ConsoleKey.Enter)
                         {
@@ -253,80 +279,131 @@ namespace Week3Challenges
 
         EntityEdit:
             Console.Clear();
+            Console.Title = "Character Edit Menu";
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("Enter the name of the character you'd like to edit:");
             string entityToEdit = Console.ReadLine();
-            foreach(var character in _characterList)
+
+            bool characterFoundToEdit = false;
+            foreach(var character in allCharacters)
             {
-                if (entityToEdit == character.Name)
+                if(entityToEdit.ToLower() == character.Name.ToLower())
                 {
-                    bool wasCharacterUpdated = characterInfo.Edit(entityToEdit, EnterDetails_Character());
-                    if (wasCharacterUpdated)
-                    {
-                        Console.WriteLine("Update successful!");
-                        Console.ReadLine();
-                        goto MainMenu;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Could not edit character. Please try again.");
-                        Console.ReadLine();
-                        goto EntityEdit;
-                    }
+                    characterFoundToEdit = true;
                 }
+            }
+            if (characterFoundToEdit)
+            {
+                var editedCharacter = characterInfo.GetName(entityToEdit);
+                if (editedCharacter != null)
+                {
+                    editedCharacter = EnterDetails_Character();
+                    Console.WriteLine("Character successfully updated!");
+                    Console.ReadLine();
+                    goto MainMenu;
+                }
+                else
+                {
+                    Console.WriteLine("Could not edit character. Please try again.");
+                    Console.ReadLine();
+                    goto MainMenu;
+                }
+            }
+            else
+            {
+                goto MonsterEditSearch;
             }
 
-            foreach(var monster in _monsterList)
+        MonsterEditSearch:
+            bool monsterFoundToEdit = false;
+            foreach(var monster in allMonsters)
             {
-                if (entityToEdit == monster.Name)
+                if (entityToEdit.ToLower() == monster.Name.ToLower())
                 {
-                    bool wasMonsterUpdated = monsterInfo.Edit(entityToEdit, EnterDetails_Monster());
-                    if (wasMonsterUpdated)
-                    {
-                        Console.WriteLine("Update successful!");
-                        Console.ReadLine();
-                        goto MainMenu;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Could not edit monster. Please try again.");
-                        Console.ReadLine();
-                        goto EntityEdit;
-                    }
+                    monsterFoundToEdit = true;
                 }
+            }
+            if (monsterFoundToEdit)
+            {
+                var editedMonster = monsterInfo.GetName(entityToEdit);
+                if (editedMonster != null)
+                {
+                    editedMonster = EnterDetails_Monster();
+                    Console.WriteLine("Monster successfully updated!");
+                    Console.ReadLine();
+                    goto MainMenu;
+                }
+                else
+                {
+                    Console.WriteLine("Could not edit monster. Please try again.");
+                    Console.ReadLine();
+                    goto MainMenu;
+                }
+            }
+            else
+            {
+                goto NPCEditSearch;
             }
 
-            foreach (var npc in _npcList)
+
+        NPCEditSearch:
+            bool npcFoundToEdit = false;
+            foreach (var npc in allNPCS)
             {
-                if (entityToEdit == npc.Name)
+                if (entityToEdit.ToLower() == npc.Name.ToLower())
                 {
-                    bool wasNPCUpdated = npcInfo.Edit(entityToEdit, EnterDetails_NPC());
-                    if (wasNPCUpdated)
-                    {
-                        Console.WriteLine("Update successful!");
-                        Console.ReadLine();
-                        goto MainMenu;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Could not edit NPC. Please try again.");
-                        Console.ReadLine();
-                        goto EntityEdit;
-                    }
+                    npcFoundToEdit = true;
                 }
             }
+            if (npcFoundToEdit)
+            {
+                var editedNPC = npcInfo.GetName(entityToEdit);
+                if(editedNPC != null)
+                {
+                    editedNPC = EnterDetails_NPC();
+                    Console.WriteLine("NPC successfully updated!");
+                    Console.ReadLine();
+                    goto MainMenu;
+                }
+                else
+                {
+                    Console.WriteLine("Could not edit NPC. Please try again.");
+                    Console.ReadLine();
+                    goto MainMenu;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nobody by that name found. Please try again.");
+                Console.ReadLine();
+                goto MainMenu;
+            }
+            
 
         EntityDelete:
             Console.Clear();
+            Console.Title = "Character Delete Menu";
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Enter the name of the character you'd like to delete.");
             string entityToDelete = Console.ReadLine();
-            foreach(var character in _characterList)
+
+            bool characterFoundToDelete = false;
+            foreach(var character in allCharacters)
             {
-                if (entityToDelete == character.Name)
+               if (entityToDelete.ToLower() == character.Name.ToLower())
+                {
+                    characterFoundToDelete = true;
+                }
+            }
+            if (characterFoundToDelete)
+            {
+                var deletedCharacter = characterInfo.GetName(entityToDelete);
+                if (deletedCharacter != null)
                 {
                     bool wasCharacterDeleted = characterInfo.Delete(entityToDelete);
                     if (wasCharacterDeleted)
                     {
-                        Console.WriteLine("Character successfully deleted.");
+                        Console.WriteLine("Character successfully deleted!");
                         Console.ReadLine();
                         goto MainMenu;
                     }
@@ -334,19 +411,39 @@ namespace Week3Challenges
                     {
                         Console.WriteLine("Could not delete character. Please try again.");
                         Console.ReadLine();
-                        goto EntityDelete;
+                        goto MainMenu;
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Character not found. Please try again.");
+                    Console.ReadLine();
+                    goto MainMenu;
+                }
+            }
+            else
+            {
+                goto MonsterDeleteSearch;
             }
 
-            foreach(var monster in _monsterList)
+        MonsterDeleteSearch:
+            bool monsterFoundToDelete = false;
+            foreach(var monster in allMonsters)
             {
-                if (entityToDelete == monster.Name)
+                if (entityToDelete.ToLower() == monster.Name.ToLower())
+                {
+                    monsterFoundToDelete = true;
+                }
+            }
+            if (monsterFoundToDelete)
+            {
+                var deletedMonster = monsterInfo.GetName(entityToDelete);
+                if (deletedMonster != null)
                 {
                     bool wasMonsterDeleted = monsterInfo.Delete(entityToDelete);
                     if (wasMonsterDeleted)
                     {
-                        Console.WriteLine("Monster successfully deleted.");
+                        Console.WriteLine("Monster successfully deleted!");
                         Console.ReadLine();
                         goto MainMenu;
                     }
@@ -354,19 +451,39 @@ namespace Week3Challenges
                     {
                         Console.WriteLine("Could not delete monster. Please try again.");
                         Console.ReadLine();
-                        goto EntityDelete;
+                        goto MainMenu;
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Monster not found. Please try again.");
+                    Console.ReadLine();
+                    goto MainMenu;
+                }
+            }
+            else
+            {
+                goto NPCDeleteSearch;
             }
 
-            foreach(var npc in _npcList)
+        NPCDeleteSearch:
+            bool npcFoundToDelete = false;
+            foreach(var npc in allNPCS)
             {
-                if(entityToDelete == npc.Name)
+                if (entityToDelete.ToLower() == npc.Name.ToLower())
+                {
+                    npcFoundToDelete = true;
+                }
+            }
+            if (npcFoundToDelete)
+            {
+                var deletedNPC = npcInfo.GetName(entityToDelete);
+                if (deletedNPC != null)
                 {
                     bool wasNPCDeleted = npcInfo.Delete(entityToDelete);
                     if (wasNPCDeleted)
                     {
-                        Console.WriteLine("NPC successfully deleted.");
+                        Console.WriteLine("NPC successfully deleted!");
                         Console.ReadLine();
                         goto MainMenu;
                     }
@@ -374,25 +491,41 @@ namespace Week3Challenges
                     {
                         Console.WriteLine("Could not delete NPC. Please try again.");
                         Console.ReadLine();
-                        goto EntityDelete;
+                        goto MainMenu;
                     }
                 }
+                else
+                {
+                    Console.WriteLine("NPC not found. Please try again.");
+                    Console.ReadLine();
+                    goto MainMenu;
+                }
             }
+            else
+            {
+                Console.WriteLine("Nobody by that name found. Please try again.");
+                Console.ReadLine();
+                goto MainMenu;
+            }          
+
+        End:
+            Console.ReadKey();
         }
 
         private void AggregateEntityLists()
         {
-            foreach (var character in _characterList)
+            _allEntities.Clear();
+            foreach (var character in allCharacters)
             {
                 _allEntities.Add(character);
             }
 
-            foreach (var monster in _monsterList)
+            foreach (var monster in allMonsters)
             {
                 _allEntities.Add(monster);
             }
 
-            foreach (var npc in _npcList)
+            foreach (var npc in allNPCS)
             {
                 _allEntities.Add(npc);
             }
@@ -400,6 +533,7 @@ namespace Week3Challenges
 
         private void PressEnterScript()
         {
+            Console.Title = "Error";
             Console.WriteLine("Invalid input. Press enter to continue.");
             while (Console.ReadKey().Key != ConsoleKey.Enter)
             {
@@ -1100,7 +1234,7 @@ namespace Week3Challenges
         SetStrength:
             Console.Clear();
             var rndStr = new Random();
-            Console.WriteLine($"What is {newMonster.Name}'s base strength?\n" +
+            Console.WriteLine($"What is {newMonster.Name}'s base Strength?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string strength = Console.ReadLine().ToLower();
             bool parseStr = int.TryParse(strength, out int howStrong);
@@ -1122,7 +1256,7 @@ namespace Week3Challenges
         SetDexterity:
             Console.Clear();
             var rndDex = new Random();
-            Console.WriteLine($"What is {newMonster.Name}'s base dexterity?\n" +
+            Console.WriteLine($"What is {newMonster.Name}'s base Dexterity?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string dexterity = Console.ReadLine().ToLower();
             bool parseDex = int.TryParse(dexterity, out int howDexterous);
@@ -1144,7 +1278,7 @@ namespace Week3Challenges
         SetConstitution:
             Console.Clear();
             var rndCon = new Random();
-            Console.WriteLine($"What is {newMonster.Name}'s base constitution?\n" +
+            Console.WriteLine($"What is {newMonster.Name}'s base Constitution?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string constitution = Console.ReadLine().ToLower();
             bool parseCon = int.TryParse(constitution, out int howConstituted);
@@ -1154,7 +1288,7 @@ namespace Week3Challenges
             }
             else if (constitution == "r")
             {
-                newMonster.Dexterity = rndCon.Next(10, 20);
+                newMonster.Constitution = rndCon.Next(10, 20);
             }
             else
             {
@@ -1166,7 +1300,7 @@ namespace Week3Challenges
         SetIntelligence:
             Console.Clear();
             var rndInt = new Random();
-            Console.WriteLine($"What is {newMonster.Name}'s base intelligence?\n" +
+            Console.WriteLine($"What is {newMonster.Name}'s base Intelligence?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string intelligence = Console.ReadLine().ToLower();
             bool parseInt = int.TryParse(intelligence, out int howIntelligent);
@@ -1188,7 +1322,7 @@ namespace Week3Challenges
         SetWisdom:
             Console.Clear();
             var rndWis = new Random();
-            Console.WriteLine($"What is {newMonster.Name}'s base wisdom?\n" +
+            Console.WriteLine($"What is {newMonster.Name}'s base Wisdom?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string wisdom = Console.ReadLine().ToLower();
             bool parseWis = int.TryParse(wisdom, out int howWise);
@@ -1210,7 +1344,7 @@ namespace Week3Challenges
         SetPerception:
             Console.Clear();
             var rndPer = new Random();
-            Console.WriteLine($"What is {newMonster.Name}'s base perception?\n" +
+            Console.WriteLine($"What is {newMonster.Name}'s base Perception?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string perception = Console.ReadLine().ToLower();
             bool parsePer = int.TryParse(perception, out int howPerceptive);
@@ -1232,7 +1366,7 @@ namespace Week3Challenges
         SetArmor:
             Console.Clear();
             var rndArm = new Random();
-            Console.WriteLine($"What is {newMonster.Name}'s base armor?\n" +
+            Console.WriteLine($"What is {newMonster.Name}'s base Armor?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string armor = Console.ReadLine().ToLower();
             bool parseArm = int.TryParse(armor, out int howArmored);
@@ -1255,7 +1389,7 @@ namespace Week3Challenges
             Console.Clear();
             var rndHealth = new Random();
             int healthSum = 0;
-            Console.WriteLine($"What is {newMonster.Name}'s base health?\n" +
+            Console.WriteLine($"What is {newMonster.Name}'s base Health?\n" +
                 $"Enter a number from 10 - 32 or press R to roll 4d8.");
             string health = Console.ReadLine().ToLower();
             bool parseHealth = int.TryParse(health, out int howHealthy);
@@ -1451,6 +1585,7 @@ namespace Week3Challenges
             var alignments = npcInfo.FindAlignment_CharacterAndNPC();
 
         AlignmentSelect:
+            Console.Clear();
             Console.WriteLine("Choose an alignment:");
             int alignmentCount = 0;
             foreach (string alignmentName in alignments)
@@ -1543,7 +1678,7 @@ namespace Week3Challenges
         // Weight
         SetWeight:
             Console.Clear();
-            Console.WriteLine($"How much does {newNPC.Name} weight (in pounds)?");
+            Console.WriteLine($"How much does {newNPC.Name} weigh (in pounds)?");
             string weight = Console.ReadLine();
             bool parseWeight = int.TryParse(weight, out int howHeavy);
             if (parseWeight && howHeavy >= 25 && howHeavy <= 600)
@@ -1568,7 +1703,7 @@ namespace Week3Challenges
         SetStrength:
             var rndStrength = new Random();
             Console.Clear();
-            Console.WriteLine($"What is {newNPC.Name}'s base strength?\n" +
+            Console.WriteLine($"What is {newNPC.Name}'s base Strength?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string strength = Console.ReadLine().ToLower();
             bool parseStrength = int.TryParse(strength, out int howStrong);
@@ -1590,7 +1725,7 @@ namespace Week3Challenges
         SetDexterity:
             var rndDexterity = new Random();
             Console.Clear();
-            Console.WriteLine($"What is {newNPC.Name}'s base dexterity?\n" +
+            Console.WriteLine($"What is {newNPC.Name}'s base Dexterity?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string dexterity = Console.ReadLine().ToLower();
             bool parseDexterity = int.TryParse(dexterity, out int howDexterous);
@@ -1612,7 +1747,7 @@ namespace Week3Challenges
         SetConstitution:
             var rndConstitution = new Random();
             Console.Clear();
-            Console.WriteLine($"What is {newNPC.Name}'s base constitution?\n" +
+            Console.WriteLine($"What is {newNPC.Name}'s base Constitution?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string constitution = Console.ReadLine().ToLower();
             bool parseConstitution = int.TryParse(constitution, out int howConstituted);
@@ -1634,7 +1769,7 @@ namespace Week3Challenges
         SetIntelligence:
             var rndIntelligence = new Random();
             Console.Clear();
-            Console.WriteLine($"What is {newNPC.Name}'s base intelligence?\n" +
+            Console.WriteLine($"What is {newNPC.Name}'s base Intelligence?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string intelligence = Console.ReadLine().ToLower();
             bool parseIntelligence = int.TryParse(intelligence, out int howIntelligent);
@@ -1656,7 +1791,7 @@ namespace Week3Challenges
         SetWisdom:
             var rndWisdom = new Random();
             Console.Clear();
-            Console.WriteLine($"What is {newNPC.Name}'s base wisdom?\n" +
+            Console.WriteLine($"What is {newNPC.Name}'s base Wisdom?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string wisdom = Console.ReadLine().ToLower();
             bool parseWisdom = int.TryParse(wisdom, out int howWise);
@@ -1678,7 +1813,7 @@ namespace Week3Challenges
         SetPerception:
             var rndPerception = new Random();
             Console.Clear();
-            Console.WriteLine($"What is {newNPC.Name}'s base perception?\n" +
+            Console.WriteLine($"What is {newNPC.Name}'s base Perception?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string perception = Console.ReadLine().ToLower();
             bool parsePerception = int.TryParse(perception, out int howPerceptive);
@@ -1700,7 +1835,7 @@ namespace Week3Challenges
         SetArmor:
             var rndArmor = new Random();
             Console.Clear();
-            Console.WriteLine($"What is {newNPC.Name}'s base armor?\n" +
+            Console.WriteLine($"What is {newNPC.Name}'s base Armor?\n" +
                 $"Enter a number from 10 - 20 or press R to roll a d20.");
             string armor = Console.ReadLine().ToLower();
             bool parseArmor = int.TryParse(armor, out int howArmored);
@@ -1722,7 +1857,7 @@ namespace Week3Challenges
         SetHealth:
             var rndHealth = new Random();
             Console.Clear();
-            Console.WriteLine($"What is {newNPC.Name}'s base health?\n" +
+            Console.WriteLine($"What is {newNPC.Name}'s base Health?\n" +
                 $"Enter a number from 10 - 32 or press R to roll 4d8.");
             string health = Console.ReadLine().ToLower();
             bool parseHealth = int.TryParse(health, out int howHealthy);
@@ -1764,53 +1899,41 @@ namespace Week3Challenges
 
         public void SeedCharacterList()
         {
-            var characterAdd = new CharacterCRUD();
-
             var player1 = new Entity(EntityRace.C_Halfling, EntityClass.B_Rogue, EntityAlignment.B_Chaotic_Neutral, "Hanenbow Burrows", 35, 65, 11, 14, 12, 14, 13, 16, 18, 22);
             var player2 = new Entity(EntityRace.C_Human, EntityClass.C_Monk, EntityAlignment.B_Lawful_Evil, "Antonin Luna", 77, 277, 12, 13, 13, 13, 15, 17, 13, 22);
             var player3 = new Entity(EntityRace.C_Dwarf, EntityClass.C_Paladin, EntityAlignment.C_Lawful_Good, "Fari Godhand", 54, 175, 13, 10, 11, 13, 14, 16, 16, 31);
             var player4 = new Entity(EntityRace.C_Elf, EntityClass.C_Druid, EntityAlignment.B_True_Neutral, "Iliana Petrichor", 72, 186, 10, 15, 10, 14, 12, 15, 13, 13);
 
-            characterAdd.Create(player1);
-            characterAdd.Create(player2);
-            characterAdd.Create(player3);
-            characterAdd.Create(player4);
-
-            _characterList = characterAdd.List();
+            characterInfo.Create(player1);
+            characterInfo.Create(player2);
+            characterInfo.Create(player3);
+            characterInfo.Create(player4);
         }
 
         public void SeedMonsterList()
         {
-            var monsterAdd = new MonsterCRUD();
-
             var monster1 = new Entity(EntityRace.M_Goblin, EntityClass.B_Fighter, EntityAlignment.B_Neutral_Evil, "Standard Goblin", 40, 55, 12, 10, 13, 10, 10, 11, 15, 15);
             var monster2 = new Entity(EntityRace.B_Orc, EntityClass.B_Rogue, EntityAlignment.B_Chaotic_Evil, "Standard Orc", 75, 250, 15, 13, 14, 11, 11, 13, 16, 25);
             var monster3 = new Entity(EntityRace.M_Kenku, EntityClass.B_Wizard, EntityAlignment.B_Lawful_Evil, "Standard Kenku", 63, 100, 12, 15, 12, 16, 13, 16, 11, 20);
             var monster4 = new Entity(EntityRace.M_Lizardfolk, EntityClass.B_Ranger, EntityAlignment.B_Neutral_Evil, "Standard Lizardfolk", 76, 225, 15, 13, 17, 12, 11, 13, 18, 25);
 
-            monsterAdd.Create(monster1);
-            monsterAdd.Create(monster2);
-            monsterAdd.Create(monster3);
-            monsterAdd.Create(monster4);
-
-            _monsterList = monsterAdd.List();
+            monsterInfo.Create(monster1);
+            monsterInfo.Create(monster2);
+            monsterInfo.Create(monster3);
+            monsterInfo.Create(monster4);
         }
             
         public void SeedNPCList()
         {
-            var npcAdd = new NonPlayerCRUD();
-
             var npc1 = new Entity(EntityRace.C_Human, EntityClass.B_Fighter, EntityAlignment.C_Lawful_Neutral, "Shopkeeper", 69, 169, 13, 13, 13, 13, 13, 13, 13, 20);
             var npc2 = new Entity(EntityRace.B_Orc, EntityClass.B_Fighter, EntityAlignment.B_True_Neutral, "Bartender", 77, 264, 16, 14, 16, 12, 11, 16, 19, 30);
             var npc3 = new Entity(EntityRace.M_Hobgoblin, EntityClass.B_Barbarian, EntityAlignment.B_Chaotic_Neutral, "Mercenary", 64, 181, 15, 17, 16, 13, 11, 14, 17, 30);
             var npc4 = new Entity(EntityRace.M_Centaur, EntityClass.C_Cleric, EntityAlignment.C_Lawful_Good, "Healer", 81, 555, 18, 10, 18, 19, 20, 20, 17, 32);
 
-            npcAdd.Create(npc1);
-            npcAdd.Create(npc2);
-            npcAdd.Create(npc3);
-            npcAdd.Create(npc4);
-
-            _npcList = npcAdd.List();
+            npcInfo.Create(npc1);
+            npcInfo.Create(npc2);
+            npcInfo.Create(npc3);
+            npcInfo.Create(npc4);
         }
     }
 }
